@@ -1,0 +1,16 @@
+type User {
+  id: ID!
+  workspace: Int!
+  password: String!
+}
+
+type Post {
+  id: ID!
+  workspace: Int!
+  password: String!
+}
+
+enum TestEnum {
+  ABC
+  BCY
+}

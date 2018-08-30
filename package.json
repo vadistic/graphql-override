@@ -1,0 +1,29 @@
+{
+  "name": "graphql-override-schema",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "ts-node test"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "^0.13.4",
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.9.3",
+    "@types/ramda": "^0.25.36",
+    "graphql": "^0.13.2",
+    "graphql-import": "^0.6.0",
+    "jest": "^23.5.0",
+    "prettier": "^1.14.2",
+    "ts-jest": "^23.1.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.0.3"
+  }
+}

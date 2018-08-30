@@ -1,0 +1,12 @@
+type User {
+  id: ID!
+  workspace: String! @update
+  password: String!
+  isReplaced: Boolean
+}
+
+type Created @update {
+  id: ID!
+  workspace: String! @update
+  password: String!
+}

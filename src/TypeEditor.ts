@@ -10,12 +10,23 @@ import {
 } from 'graphql'
 import * as R from 'ramda'
 
-import { DefinitionNodeWithFields, hasName } from './util'
+import { DefinitionNodeWithFields, HashedDefinitionNode, hasName } from './util'
 
 export class GraphqlTypeEditor {
-  public node: DefinitionNode
-  constructor(node) {
-    this.node = node
+  public node: HashedDefinitionNode<DefinitionNode>
+  constructor(node: DefinitionNode) {
+    if (
+      this.node.kind === 'ObjectTypeDefinition' ||
+      this.node.kind === 'InterfaceTypeDefinition'
+    ) {
+      this.node = {
+        node,
+        fields: this.node.fields.reduce((acc, field) => {
+          acc[field.name.value] = field
+          return acc
+        }, {}),
+      }
+    }
   }
 
   // Helper Methods

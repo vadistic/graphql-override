@@ -3,8 +3,8 @@ import { DocumentNode, parse, print, TypeDefinitionNode } from 'graphql'
 import * as path from 'path'
 import * as R from 'ramda'
 
-import { GraphQlAstEditor } from './AstEditor'
-import { TypeDefinition } from './TypeDefinition'
+import { GraphqlAstEditor } from './AstEditor'
+import { GraphqlTypeEditor } from './TypeEditor'
 import { tuple } from './util'
 
 interface OverrideSchema {
@@ -40,17 +40,10 @@ export const overrideSchema = (
   // AST node definitions from (naive) merge of direcitve and override schemas
   const overrideAstDef = parse(`${directives} \n ${overrides}`).definitions
 
-  const newSchema = new GraphQlAstEditor(schema)
+  const newSchema = new GraphqlAstEditor(schema)
 
-  const user = newSchema.getTypeTest('User').
+  newSchema.getTypeTest('User')
 
-  newSchema.deleteType('Post')
-
-  newSchema.createType(overrideAstDef[5])
-
-  newSchema.replaceType(overrideAstDef[4])
-
-  // tslint:disable-next-line:no-console
   console.log(newSchema.print())
 
   return newSchema

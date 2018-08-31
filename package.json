@@ -1,5 +1,5 @@
 {
-  "name": "graphql-override-schema",
+  "name": "graphql-ast-editor",
   "version": "0.1.0",
   "main": "index.js",
   "author": "Jakub Wadas <vadistic@gmail.com>",

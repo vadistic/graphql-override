@@ -11,25 +11,24 @@ import {
 } from 'graphql'
 import * as R from 'ramda'
 
-import { TypeDefinition } from './TypeDefinition'
-import { hasNameValue, Mutable, supportedDefinitionNodes } from './util'
+import { GraphqlTypeEditor } from './TypeEditor'
+import { hasName, Mutable, supportedDefinitionNodes } from './util'
 
-export class GraphQlAstEditor {
-  public schema: Mutable<DocumentNode>
-  public defs: TypeDefinition[]
+export class GraphqlAstEditor {
+  public defs: GraphqlTypeEditor[]
+  private schema: Mutable<DocumentNode>
 
   constructor(schema: string | DocumentNode) {
     this.schema = typeof schema === 'string' ? parse(schema) : schema
 
     this.defs = R.map(
-      (def: DefinitionNode) => new TypeDefinition(def),
+      (def: DefinitionNode) => new GraphqlTypeEditor(def),
       this.schema.definitions
     )
   }
 
-  // Logic methods
   public typeExist = (name: string) =>
-    this.schema.definitions.some(hasNameValue(name))
+    this.schema.definitions.some(hasName(name))
 
   public typeIsSupported = (def: DefinitionNode) =>
     R.contains(def.kind, supportedDefinitionNodes)
@@ -42,21 +41,6 @@ export class GraphQlAstEditor {
 
   public getTypeTest = (typeName: string) =>
     this.defs[this.getTypeIndex(typeName)]
-
-  public fieldExist = (typeName: string, fieldName: string) => {
-    const fields = this._getObjType(typeName).fields as object[]
-    return fields.some(hasNameValue(fieldName))
-  }
-
-  public getFieldIndex = (typeName: string, fieldName) =>
-    R.findIndex(R.pathEq(['name', 'value'], fieldName))(
-      this._getObjType(typeName).fields
-    )
-
-  public getField = (typeName: string, fieldName): FieldDefinitionNode =>
-    R.find(R.pathEq(['name', 'value'], fieldName))(
-      this._getObjType(typeName).fields
-    )
 
   // Type methods
   public createType = (def: DefinitionNode) => {
@@ -90,7 +74,7 @@ export class GraphQlAstEditor {
 
     if (this.typeExist(def.name.value)) {
       const index = R.findIndex(
-        hasNameValue(def.name.value),
+        hasName(def.name.value),
         this.schema.definitions
       )
       this.schema.definitions = R.update(index, def, this.schema.definitions)
@@ -182,62 +166,16 @@ export class GraphQlAstEditor {
 
   public deleteType = (name: string) => {
     if (this.typeExist(name)) {
-      this.schema.definitions = R.reject(hasNameValue(name))(
-        this.schema.definitions
-      )
+      this.schema.definitions = R.reject(hasName(name))(this.schema.definitions)
     } else {
       throw new Error(`Cannot delete definition '${name}'. It does not exist`)
     }
   }
 
-  // Fields methods
-
-  public deleteField = (typeName: string, fieldName: string) => {
-    if (!this.typeExist(typeName)) {
-      throw new Error(
-        `Definition '${typeName}' does not exist and the field ${fieldName} cannot be deleted`
-      )
-    }
-
-    const typeIndex = this.getTypeIndex(typeName)
-    const typeDef = this.getType(typeName)
-
-    if (
-      typeDef.kind === 'ObjectTypeDefinition' ||
-      typeDef.kind === 'InputObjectTypeDefinition' ||
-      typeDef.kind === 'InterfaceTypeDefinition'
-    ) {
-      this.schema.definitions = R.update(
-        typeIndex,
-        R.merge(typeDef, {
-          fields: R.reject(hasNameValue(fieldName), typeDef.fields),
-        }),
-        this.schema.definitions
-      )
-    }
-
-    if (typeDef.kind === 'EnumTypeDefinition') {
-      this.schema.definitions = R.update(
-        typeIndex,
-        R.merge(typeDef, R.reject(hasNameValue(fieldName), typeDef.values)),
-        this.schema.definitions
-      )
-    }
-  }
-
   // Result methods
   public print() {
-    return print(R.assoc('definitions', this.defs, this.schema))
-  }
-
-  private _getObjType = (typeName: string) => {
-    const def = this.getType(typeName)
-    if (
-      def.kind === 'ObjectTypeDefinition' ||
-      def.kind === 'InterfaceTypeDefinition' ||
-      def.kind === 'InputObjectTypeDefinition'
-    ) {
-      return def
-    }
+    return print(
+      R.assoc('definitions', this.defs.map(def => def.node), this.schema)
+    )
   }
 }

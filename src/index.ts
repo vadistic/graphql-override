@@ -1,10 +1,11 @@
 import { readFileSync } from 'fs'
-import { DocumentNode, parse, print } from 'graphql'
+import { DocumentNode, parse, print, TypeDefinitionNode } from 'graphql'
 import * as path from 'path'
 import * as R from 'ramda'
 
-import { AstEditor } from './AstEditor'
-import { SupportedDefinitionNode, tuple } from './util'
+import { GraphQlAstEditor } from './AstEditor'
+import { TypeDefinition } from './TypeDefinition'
+import { tuple } from './util'
 
 interface OverrideSchema {
   schema?: string | DocumentNode
@@ -16,12 +17,11 @@ interface OverrideSchemaOptions {
   silent: true
 }
 
-
 const directiveTypes = tuple('add', 'update', 'replace', 'delete')
 
 const hasDirectives = R.has('directives')
 
-const hasOverrideDirectives = (nodeTypeDef: SupportedDefinitionNode) =>
+const hasOverrideDirectives = (nodeTypeDef: TypeDefinitionNode) =>
   nodeTypeDef.directives.some(dir => dir.name.value === 'update')
 
 export const overrideSchema = (
@@ -40,7 +40,9 @@ export const overrideSchema = (
   // AST node definitions from (naive) merge of direcitve and override schemas
   const overrideAstDef = parse(`${directives} \n ${overrides}`).definitions
 
-  const newSchema = new AstEditor(schema)
+  const newSchema = new GraphQlAstEditor(schema)
+
+  const user = newSchema.getTypeTest('User').
 
   newSchema.deleteType('Post')
 

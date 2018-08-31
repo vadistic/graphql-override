@@ -1,40 +1,30 @@
 import {
   DefinitionNode,
   DocumentNode,
-  EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
   FieldDefinitionNode,
-  InputObjectTypeDefinitionNode,
   InterfaceTypeDefinitionNode,
-  ObjectTypeDefinitionNode,
+  Location,
   parse,
   print,
   TypeDefinitionNode,
-  TypeSystemDefinitionNode,
 } from 'graphql'
 import * as R from 'ramda'
 
-import {
-  Mutable,
-  ObjectDefinitiionNode,
-  specificDefinitionNode,
-  SupportedDefinitionNode,
-  supportedDefinitionNodes,
-} from './util'
+import { TypeDefinition } from './TypeDefinition'
+import { hasNameValue, Mutable, supportedDefinitionNodes } from './util'
 
-type DefinitionPredicate = (def: DefinitionNode) => boolean
-
-const hasNameValue = (name: string): DefinitionPredicate =>
-  R.pipe(
-    R.path(['name', 'value']),
-    R.equals(name)
-  )
-
-export class AstEditor {
+export class GraphQlAstEditor {
   public schema: Mutable<DocumentNode>
+  public defs: TypeDefinition[]
 
   constructor(schema: string | DocumentNode) {
     this.schema = typeof schema === 'string' ? parse(schema) : schema
+
+    this.defs = R.map(
+      (def: DefinitionNode) => new TypeDefinition(def),
+      this.schema.definitions
+    )
   }
 
   // Logic methods
@@ -44,12 +34,36 @@ export class AstEditor {
   public typeIsSupported = (def: DefinitionNode) =>
     R.contains(def.kind, supportedDefinitionNodes)
 
+  public getTypeIndex = (typeName: string) =>
+    R.findIndex(R.pathEq(['name', 'value'], typeName))(this.schema.definitions)
+
+  public getType = (typeName: string) =>
+    this.schema.definitions[this.getTypeIndex(typeName)]
+
+  public getTypeTest = (typeName: string) =>
+    this.defs[this.getTypeIndex(typeName)]
+
+  public fieldExist = (typeName: string, fieldName: string) => {
+    const fields = this._getObjType(typeName).fields as object[]
+    return fields.some(hasNameValue(fieldName))
+  }
+
+  public getFieldIndex = (typeName: string, fieldName) =>
+    R.findIndex(R.pathEq(['name', 'value'], fieldName))(
+      this._getObjType(typeName).fields
+    )
+
+  public getField = (typeName: string, fieldName): FieldDefinitionNode =>
+    R.find(R.pathEq(['name', 'value'], fieldName))(
+      this._getObjType(typeName).fields
+    )
+
   // Type methods
   public createType = (def: DefinitionNode) => {
-    let _def: SupportedDefinitionNode
+    let _def: TypeDefinitionNode
 
     if (this.typeIsSupported(def)) {
-      _def = def as SupportedDefinitionNode
+      _def = def as TypeDefinitionNode
     } else {
       throw new Error(
         `Cannot create definition node. Provided unnamed type definition.`
@@ -66,25 +80,23 @@ export class AstEditor {
   }
 
   public replaceType = (def: DefinitionNode) => {
-    let _def: SupportedDefinitionNode
-
-    if (this.typeIsSupported(def)) {
-      _def = def as SupportedDefinitionNode
-    } else {
+    if (!this.typeIsSupported(def)) {
       throw new Error(
         `Cannot replace definition node. Provided unnamed type definition.`
       )
     }
 
-    if (this.typeExist(_def.name.value)) {
+    def = def as TypeDefinitionNode
+
+    if (this.typeExist(def.name.value)) {
       const index = R.findIndex(
-        hasNameValue(_def.name.value),
+        hasNameValue(def.name.value),
         this.schema.definitions
       )
       this.schema.definitions = R.update(index, def, this.schema.definitions)
     } else {
       throw new Error(
-        `Cannot replace node. Type '${_def.name.value}' didn't exist`
+        `Cannot replace node. Type '${def.name.value}' didn't exist`
       )
     }
   }
@@ -94,80 +106,78 @@ export class AstEditor {
       throw new Error(`Cannot update node. Provided unnamed type definition.`)
     }
 
-    const _def = def as SupportedDefinitionNode
+    def = def as TypeDefinitionNode
+
     let nextDef
 
-    if (!this.typeExist(_def.name.value)) {
+    if (!this.typeExist(def.name.value)) {
       throw new Error(
-        `Cannot update node. Type '${_def.name.value}' doesn't exist`
+        `Cannot update definition '${def.name.value}'. It doesn't exist`
       )
     }
 
-    const index = R.findIndex(
-      hasNameValue(_def.name.value),
-      this.schema.definitions
-    )
+    const prevDef = this.getType(def.name.value)
 
-    const prevDef = this.schema.definitions[index]
-
-    if (prevDef.kind !== _def.kind) {
+    if (prevDef.kind !== def.kind) {
       throw new Error(
-        `Cannot update definition node. '${
-          _def.name.value
-        }' nodes are of diferent type`
+        `Cannot update definition '${def.name.value}'. Node Types are different`
       )
     }
 
     if (
-      _def.kind === 'UnionTypeDefinition' ||
-      _def.kind === 'ScalarTypeDefinition'
+      def.kind === 'UnionTypeDefinition' ||
+      def.kind === 'ScalarTypeDefinition'
     ) {
       // Just replace it
-      nextDef = _def
+      nextDef = def
     }
 
-    if (_def.kind === 'EnumTypeDefinition') {
-      const typedPrevDef = prevDef as EnumTypeDefinitionNode
-
-      nextDef = R.merge(_def, {
-        description: _def.description && prevDef.description,
+    if (
+      def.kind === 'EnumTypeDefinition' &&
+      prevDef.kind === 'EnumTypeDefinition'
+    ) {
+      nextDef = R.merge(def, {
+        description: def.description && prevDef.description,
         values: R.uniqBy((val: EnumValueDefinitionNode) => val.name.value, [
-          ..._def.values,
-          ...typedPrevDef.values,
-        ]),
-      })
-    }
-
-    if (_def.kind === 'ObjectTypeDefinition') {
-      const typedPrevDef = prevDef as
-        | ObjectTypeDefinitionNode
-        | InputObjectTypeDefinitionNode
-
-      nextDef = R.merge(_def, {
-        description: _def.description && typedPrevDef.description,
-        fields: R.uniqBy((field: FieldDefinitionNode) => field.name.value, [
-          ..._def.fields,
-          ...typedPrevDef.fields,
+          ...def.values,
+          ...prevDef.values,
         ]),
       })
     }
 
     if (
-      _def.kind === 'InterfaceTypeDefinition' ||
-      _def.kind === 'InputObjectTypeDefinition'
+      def.kind === 'ObjectTypeDefinition' &&
+      prevDef.kind === 'ObjectTypeDefinition'
+    ) {
+      nextDef = R.merge(def, {
+        description: def.description && prevDef.description,
+        fields: R.uniqBy((field: FieldDefinitionNode) => field.name.value, [
+          ...def.fields,
+          ...prevDef.fields,
+        ]),
+      })
+    }
+
+    if (
+      def.kind === 'InterfaceTypeDefinition' ||
+      def.kind === 'InputObjectTypeDefinition'
     ) {
       const typedPrevDef = prevDef as InterfaceTypeDefinitionNode
 
-      nextDef = R.merge(_def, {
-        description: _def.description && typedPrevDef.description,
+      nextDef = R.merge(def, {
+        description: def.description && typedPrevDef.description,
         fields: R.uniqBy((field: FieldDefinitionNode) => field.name.value, [
-          ..._def.fields,
+          ...def.fields,
           ...typedPrevDef.fields,
         ]),
       })
     }
 
-    this.schema.definitions = R.update(index, nextDef, this.schema.definitions)
+    this.schema.definitions = R.update(
+      this.getTypeIndex(def.name.value),
+      nextDef,
+      this.schema.definitions
+    )
   }
 
   public deleteType = (name: string) => {
@@ -176,14 +186,58 @@ export class AstEditor {
         this.schema.definitions
       )
     } else {
-      throw new Error(`Type '${name}'does not exist and cannot be deleted`)
+      throw new Error(`Cannot delete definition '${name}'. It does not exist`)
     }
   }
 
   // Fields methods
 
+  public deleteField = (typeName: string, fieldName: string) => {
+    if (!this.typeExist(typeName)) {
+      throw new Error(
+        `Definition '${typeName}' does not exist and the field ${fieldName} cannot be deleted`
+      )
+    }
+
+    const typeIndex = this.getTypeIndex(typeName)
+    const typeDef = this.getType(typeName)
+
+    if (
+      typeDef.kind === 'ObjectTypeDefinition' ||
+      typeDef.kind === 'InputObjectTypeDefinition' ||
+      typeDef.kind === 'InterfaceTypeDefinition'
+    ) {
+      this.schema.definitions = R.update(
+        typeIndex,
+        R.merge(typeDef, {
+          fields: R.reject(hasNameValue(fieldName), typeDef.fields),
+        }),
+        this.schema.definitions
+      )
+    }
+
+    if (typeDef.kind === 'EnumTypeDefinition') {
+      this.schema.definitions = R.update(
+        typeIndex,
+        R.merge(typeDef, R.reject(hasNameValue(fieldName), typeDef.values)),
+        this.schema.definitions
+      )
+    }
+  }
+
   // Result methods
   public print() {
-    return print(this.schema)
+    return print(R.assoc('definitions', this.defs, this.schema))
+  }
+
+  private _getObjType = (typeName: string) => {
+    const def = this.getType(typeName)
+    if (
+      def.kind === 'ObjectTypeDefinition' ||
+      def.kind === 'InterfaceTypeDefinition' ||
+      def.kind === 'InputObjectTypeDefinition'
+    ) {
+      return def
+    }
   }
 }

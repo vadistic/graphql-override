@@ -5,7 +5,6 @@ import * as R from 'ramda'
 
 import { GraphqlAstEditor } from './AstEditor'
 import { GraphqlDefinitionEditor } from './DefinitionEditor'
-import { tuple } from './util'
 
 interface OverrideSchema {
   schema?: string | DocumentNode
@@ -16,10 +15,6 @@ interface OverrideSchema {
 interface OverrideSchemaOptions {
   silent: true
 }
-
-const directiveTypes = tuple('add', 'update', 'replace', 'delete')
-
-const hasDirectives = R.has('directives')
 
 const hasOverrideDirectives = (nodeTypeDef: TypeDefinitionNode) =>
   nodeTypeDef.directives.some(dir => dir.name.value === 'update')
@@ -41,8 +36,6 @@ export const overrideSchema = (
   const overrideAstDef = parse(`${directives} \n ${overrides}`).definitions
 
   const newSchema = new GraphqlAstEditor(schema)
-
-  newSchema.getTypeTest('User')
 
   console.log(newSchema.print())
 

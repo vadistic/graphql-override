@@ -1,15 +1,11 @@
 import { GraphqlTypeDefsEditor } from '../src'
 
-import { parse, print, valueFromAST } from 'graphql'
+import { parse, print } from 'graphql'
 
 import { schema } from './mock'
 
 describe('TypeDefsEditor', () => {
-  let editor: GraphqlTypeDefsEditor
-
-  beforeAll(() => {
-    editor = new GraphqlTypeDefsEditor(schema)
-  })
+  const editor = new GraphqlTypeDefsEditor(schema)
 
   it('instantiate', () => {
     expect(editor).toBeInstanceOf(GraphqlTypeDefsEditor)
@@ -39,5 +35,21 @@ describe('TypeDefsEditor', () => {
   it('.hasDefinition() fails', () => {
     const val = editor.hasDefinition('Post')
     expect(val).toBeFalsy()
+  })
+
+  it('.getDefinition() succeed', () => {
+    const definition = editor.getDefinition('Notification')
+    expect(definition.print()).toMatchInlineSnapshot(`
+"type Notification {
+  id: ID
+  date: Date
+  type: String
+}"
+`)
+  })
+
+  it('.getDefinition() fails', () => {
+    const definition = editor.getDefinition('Something')
+    expect(definition).toBeFalsy()
   })
 })

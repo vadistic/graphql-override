@@ -102,7 +102,8 @@ export const directiveDefinitionHashMap = {
     description: false,
     name: false,
     arguments: true,
-    locations: true,
+    // Is Array, but has not name.value so cannot hash it with current system
+    locations: false,
   },
 }
 

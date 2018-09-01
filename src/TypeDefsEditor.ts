@@ -61,7 +61,11 @@ export class GraphqlTypeDefsEditor {
 
     this.schema.definitions.forEach(node => {
       if (!isSupported(node)) {
-        throw Error(`Type ${node.kind} is not supported by type definition editor`)
+        throw new Error(
+          `${
+            R.has('name', node) ? R.path(['name', 'value'], node) : `Unnamed`
+          } node of type '${node!.kind}' is not supported by the editor`
+        )
       } else {
         if (R.has(node.kind, directiveDefinitionHashMap)) {
           this.directives[node.name.value] = new GraphqlDefinitionEditor(node)

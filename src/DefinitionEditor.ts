@@ -57,7 +57,11 @@ export class GraphqlDefinitionEditor<
   constructor(node: SupportedDefinitionNode) {
     if (!isSupported(node)) {
       // Type assertion because error is for non-TS / invalid typings
-      throw Error(`Type ${node!.kind} is not supported by  type definition editor`)
+      throw new Error(
+        `${node!.name ? node!.name.value : `Unnamed`} node of type '${
+          node!.kind
+        }' is not supported by the editor`
+      )
     }
 
     // Hashing all array properties using name as key

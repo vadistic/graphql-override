@@ -4,7 +4,7 @@ import * as path from 'path'
 import * as R from 'ramda'
 
 import { GraphqlAstEditor } from './AstEditor'
-import { GraphqlTypeEditor } from './TypeEditor'
+import { GraphqlDefinitionEditor } from './DefinitionEditor'
 import { tuple } from './util'
 
 interface OverrideSchema {

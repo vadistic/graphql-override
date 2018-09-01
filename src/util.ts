@@ -1,73 +1,42 @@
 import {
   DefinitionNode,
-  DirectiveNode,
-  EnumTypeDefinitionNode,
-  FieldDefinitionNode,
-  InputObjectTypeDefinitionNode,
-  InterfaceTypeDefinitionNode,
-  NamedTypeNode,
-  ObjectTypeDefinitionNode,
-  ScalarTypeDefinitionNode,
+  DirectiveDefinitionNode,
   TypeDefinitionNode,
-  UnionTypeDefinitionNode,
+  TypeExtensionNode,
 } from 'graphql'
 
 import * as R from 'ramda'
+import { definitionHashMap } from './hashmap'
 
 // tuple to infer specific union from directiveTypes array instead of just string
 export const tuple = <T extends string[]>(...args: T) => args
 
-export const supportedDefinitionNodes = tuple(
-  'ObjectTypeDefinition',
-  'InputObjectTypeDefinition',
-  'InterfaceTypeDefinition',
-  'EnumTypeDefinition',
-  'ScalarTypeDefinition',
-  'UnionTypeDefinition'
-)
+export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 
-export type DefinitionNodeWithDescription =
-  | ObjectTypeDefinitionNode
-  | InputObjectTypeDefinitionNode
-  | InterfaceTypeDefinitionNode
-
-export type DefinitionNodeWithName =
-  | ObjectTypeDefinitionNode
-  | InputObjectTypeDefinitionNode
-  | InterfaceTypeDefinitionNode
-
-export type DefinitionNodeWithInterfaces = ObjectTypeDefinitionNode
-
-export type DefinitionNodeWithDirectives =
-  | ObjectTypeDefinitionNode
-  | InputObjectTypeDefinitionNode
-  | InterfaceTypeDefinitionNode
-
-export type DefinitionNodeWithFields =
-  | ObjectTypeDefinitionNode
-  | InputObjectTypeDefinitionNode
-  | InterfaceTypeDefinitionNode
-
-export interface HashedDefinitionNode<
-  T extends DefinitionNode = DefinitionNode
-> {
-  kind: T['kind']
-  loc?: T['loc']
-  description?: T extends DefinitionNodeWithDescription
-    ? T['description']
-    : never
-  name: T extends DefinitionNodeWithName ? T['name'] : never
-  interfaces?: T extends DefinitionNodeWithInterfaces
-    ? { [P in keyof T['interfaces'][number]['name']['value']]: NamedTypeNode }
-    : never
-  directives?: T extends DefinitionNodeWithDirectives
-    ? { [P in keyof T['directives'][number]['name']['value']]: DirectiveNode }
-    : never
-  fields?: T extends DefinitionNodeWithFields
-    ? { [P in keyof T['fields'][number]['name']['value']]: FieldDefinitionNode }
-    : never
+export interface HashableTypeProps {
+  name: {
+    value: string
+  }
 }
 
-export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
+export interface HashedTypeProp<T extends HashableTypeProps> {
+  [name: string]: T
+}
+
+export type SupportedDefinitionNode =
+  | TypeDefinitionNode
+  | TypeExtensionNode
+  | DirectiveDefinitionNode
+
+export const hashArrByName = <T extends HashableTypeProps>(defs: ReadonlyArray<T>) =>
+  defs.reduce(
+    (acc, def) => {
+      acc[def.name.value] = def
+      return acc
+    },
+    {} as HashedTypeProp<T>
+  )
+
+export const isSupported = (node: DefinitionNode) => R.has(node.kind, definitionHashMap)
 
 export const hasName = (name: string) => R.pathEq(['name', 'value'], name)

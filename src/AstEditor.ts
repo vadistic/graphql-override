@@ -11,27 +11,25 @@ import {
 } from 'graphql'
 import * as R from 'ramda'
 
-import { GraphqlTypeEditor } from './TypeEditor'
-import { hasName, Mutable, supportedDefinitionNodes } from './util'
+import { GraphqlDefinitionEditor } from './DefinitionEditor'
+import { definitionHashMap } from './hashmap';
+import { hasName, Mutable } from './util'
 
 export class GraphqlAstEditor {
-  public defs: GraphqlTypeEditor[]
+  public defs: GraphqlDefinitionEditor[]
   private schema: Mutable<DocumentNode>
 
   constructor(schema: string | DocumentNode) {
     this.schema = typeof schema === 'string' ? parse(schema) : schema
 
     this.defs = R.map(
-      (def: DefinitionNode) => new GraphqlTypeEditor(def),
+      (def: DefinitionNode) => new GraphqlDefinitionEditor(def),
       this.schema.definitions
     )
   }
 
   public typeExist = (name: string) =>
     this.schema.definitions.some(hasName(name))
-
-  public typeIsSupported = (def: DefinitionNode) =>
-    R.contains(def.kind, supportedDefinitionNodes)
 
   public getTypeIndex = (typeName: string) =>
     R.findIndex(R.pathEq(['name', 'value'], typeName))(this.schema.definitions)
@@ -175,7 +173,7 @@ export class GraphqlAstEditor {
   // Result methods
   public print() {
     return print(
-      R.assoc('definitions', this.defs.map(def => def.node), this.schema)
+      R.assoc('definitions', this.defs.map(def => def.hashNode), this.schema)
     )
   }
 }

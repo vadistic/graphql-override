@@ -11,7 +11,7 @@ import {
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
-import { definitionHashMap } from './hashmap';
+import { typeSystemHashMap } from './hashmap';
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 
@@ -48,7 +48,7 @@ export interface Hash<T> {
 export interface HashedDefinitionNode<
   T extends SupportedDefinitionNode = SupportedDefinitionNode
 > {
-  kind: keyof typeof definitionHashMap
+  kind: keyof typeof typeSystemHashMap
   loc?: Location
   description?: 'description' extends keyof T ? StringValueNode : never
   name?: NameNode

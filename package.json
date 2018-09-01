@@ -6,7 +6,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "ts-node test"
+    "mock": "ts-node test/mock",
+    "build": "tsc",
+    "test": "jest --config ./jest.config.js",
+    "test:watch": "yarn test -- --watchAll"
   },
   "dependencies": {
     "ramda": "^0.25.0"
@@ -20,6 +23,7 @@
     "graphql-import": "^0.6.0",
     "jest": "^23.5.0",
     "prettier": "^1.14.2",
+    "rimraf": "^2.6.2",
     "ts-jest": "^23.1.4",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

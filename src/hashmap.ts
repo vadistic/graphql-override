@@ -1,5 +1,5 @@
 // TypeDefinitionNode
-const typeDefinitionNodesHashMap = {
+export const typeDefinitionHashMap = {
   ScalarTypeDefinition: {
     kind: false,
     loc: false,
@@ -48,8 +48,9 @@ const typeDefinitionNodesHashMap = {
     fields: true,
   },
 }
+
 // TypeExtensionNode
-const typeExtensionNodeHashMap = {
+export const typeExtensionHashMap = {
   ScalarTypeExtension: {
     kind: false,
     loc: false,
@@ -94,18 +95,20 @@ const typeExtensionNodeHashMap = {
 }
 
 // DirectiveDefinitionNode
-const directiveDefinitionNodeHashMap = {
-  kind: false,
-  loc: false,
-  description: false,
-  name: false,
-  arguments: true,
-  locations: true,
+export const directiveDefinitionHashMap = {
+  DirectiveDefinition: {
+    kind: false,
+    loc: false,
+    description: false,
+    name: false,
+    arguments: true,
+    locations: true,
+  },
 }
 
-export const definitionHashMap = Object.assign(
+export const typeSystemHashMap = Object.assign(
   {},
-  typeDefinitionNodesHashMap,
-  typeExtensionNodeHashMap,
-  directiveDefinitionNodeHashMap
+  typeDefinitionHashMap,
+  typeExtensionHashMap,
+  directiveDefinitionHashMap
 )

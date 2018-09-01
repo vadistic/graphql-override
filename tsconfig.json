@@ -3,9 +3,15 @@
     "target": "es6",
     "moduleResolution": "node",
     "module": "commonjs",
-    "lib": ["es2017"],
-    "sourceMap": true,
+    "lib": ["es2017", "esnext"],
+    "alwaysStrict": true,
+    "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
+    "sourceMap": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true
   },
+  "include": ["src/**/*.ts", "jest.config.js"],
+  "exclude": ["node_modules", "dist", "coverage"]
 }

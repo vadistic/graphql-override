@@ -6,11 +6,12 @@ import {
   FieldDefinitionNode,
   InputValueDefinitionNode,
   NamedTypeNode,
+  parse,
   print,
 } from 'graphql'
 import * as R from 'ramda'
 
-import { definitionHashMap } from './hashmap'
+import { typeSystemHashMap } from './hashmap'
 import {
   AllDefinitionNodeKeys,
   HashDefinitionNodeKeys,
@@ -31,7 +32,7 @@ export interface GetInProp {
   (prop: 'values'): (name: string) => EnumValueDefinitionNode
 }
 
-export interface CreateOnType<T extends SupportedDefinitionNode> {
+export interface CreateInProp<T extends SupportedDefinitionNode> {
   (prop: 'arguments'): (def: InputValueDefinitionNode) => GraphqlDefinitionEditor<T>
   (prop: 'directives'): (def: DirectiveNode) => GraphqlDefinitionEditor<T>
   (prop: 'fields'): (
@@ -41,17 +42,17 @@ export interface CreateOnType<T extends SupportedDefinitionNode> {
   (prop: 'values'): (def: EnumValueDefinitionNode) => GraphqlDefinitionEditor<T>
 }
 
-export type UpsertOnType<T extends SupportedDefinitionNode> = CreateOnType<T>
+export type UpsertInProp<T extends SupportedDefinitionNode> = CreateInProp<T>
 
-export type DeleteOnType<T extends SupportedDefinitionNode> = (
+export type DeleteInType<T extends SupportedDefinitionNode> = (
   prop: HashDefinitionNodeKeys
 ) => (name: string) => GraphqlDefinitionEditor<T>
 
 export class GraphqlDefinitionEditor<
   T extends SupportedDefinitionNode = SupportedDefinitionNode
 > {
-  // Type assertion for object initialization
-  private hashNode = {} as HashedDefinitionNode<T>
+  // Type assertion only for object initialization
+  private hashedNode = {} as HashedDefinitionNode<T>
 
   constructor(node: SupportedDefinitionNode) {
     if (!isSupported(node)) {
@@ -61,26 +62,27 @@ export class GraphqlDefinitionEditor<
 
     // Hashing all array properties using name as key
     Object.keys(node).forEach(prop => {
-      if (definitionHashMap[node.kind][prop]) {
-        this.hashNode[prop] = hashArrByName(node[prop])
+      if (typeSystemHashMap[node.kind][prop]) {
+        this.hashedNode[prop] = hashArrByName(node[prop])
       } else {
-        this.hashNode[prop] = node[prop]
+        this.hashedNode[prop] = node[prop]
       }
     })
   }
 
   // Helper
-  public name = () => this.hashNode.name.value
-  public kind = () => this.hashNode.kind
+  public name = () => this.hashedNode.name.value
+  public kind = () => this.hashedNode.kind
 
-  public hasProp: HasProp = prop => name => R.has(name, this.hashNode)
+  public hasProp: HasProp = prop => name => R.has(name, this.hashedNode)
 
-  public existInProp: ExistInProp = prop => name => R.has(name, this.hashNode[prop])
+  public hasInProp: ExistInProp = prop => name => R.has(name, this.hashedNode[prop])
 
-  public getInProp: GetInProp = prop => name => R.prop(name, this.hashNode[prop])
+  // TODO: Add error message
+  public getInProp: GetInProp = prop => name => R.prop(name, this.hashedNode[prop])
 
-  public createInProp: CreateOnType<T> = prop => def => {
-    if (!R.has(prop, this.hashNode)) {
+  public createInProp: CreateInProp<T> = prop => def => {
+    if (!this.hasProp(prop)) {
       throw new Error(
         `Cannot create ${def.name.value} in ${prop} on type ${this.name()}
         ${this.kind()} type has no ${prop}.
@@ -88,7 +90,7 @@ export class GraphqlDefinitionEditor<
       )
     }
 
-    if (this.existInProp(prop)(def.name.value)) {
+    if (this.hasInProp(prop)(def.name.value)) {
       throw new Error(
         `Cannot create ${def.name.value} in ${prop} on type ${this.name()}
         Value with the same name already exist.
@@ -96,27 +98,27 @@ export class GraphqlDefinitionEditor<
       )
     }
 
-    this.hashNode[prop][def.name.value] = def
+    this.hashedNode[prop][def.name.value] = def
 
     return this
   }
 
-  public upsertInProp: UpsertOnType<T> = prop => def => {
-    if (!R.has(prop, this.hashNode)) {
+  public upsertInProp: UpsertInProp<T> = prop => def => {
+    if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot create ${def.name.value} in ${prop} on type ${this.name()}
+        `Cannot upsert ${def.name.value} in ${prop} on type ${this.name()}
         ${this.kind()} type has no ${prop}.
         `
       )
     }
 
-    this.hashNode[prop][def.name.value] = def
+    this.hashedNode[prop][def.name.value] = def
 
     return this
   }
 
-  public deleteInProp: DeleteOnType<T> = prop => name => {
-    if (!R.has(prop, this.hashNode)) {
+  public deleteInProp: DeleteInType<T> = prop => name => {
+    if (!this.hasProp(prop)) {
       throw new Error(
         `Cannot delete ${name} in ${prop} on type ${this.name()}
         ${this.kind()} type has no ${prop}.
@@ -124,7 +126,7 @@ export class GraphqlDefinitionEditor<
       )
     }
 
-    if (!this.existInProp(prop)(name)) {
+    if (!this.hasInProp(prop)(name)) {
       throw new Error(
         `Cannot delete ${name} in ${prop} on type ${this.name()}
         Value does not exist.
@@ -132,16 +134,16 @@ export class GraphqlDefinitionEditor<
       )
     }
 
-    this.hashNode[prop] = R.dissoc(name, this.hashNode[prop])
+    this.hashedNode[prop] = R.dissoc(name, this.hashedNode[prop])
 
     return this
   }
 
   // Crud
-  public existDirective = this.existInProp('directives')
-  public existField = this.existInProp('fields')
-  public existInterface = this.existInProp('interfaces')
-  public existValue = this.existInProp('values')
+  public hasDirective = this.hasInProp('directives')
+  public hasField = this.hasInProp('fields')
+  public hasInterface = this.hasInProp('interfaces')
+  public hasValue = this.hasInProp('values')
 
   public getDirective = this.getInProp('directives')
   public getField = this.getInProp('fields')
@@ -163,13 +165,13 @@ export class GraphqlDefinitionEditor<
   public deleteInterface = this.deleteInProp('interfaces')
   public deleteValue = this.deleteInProp('values')
 
-  public astNode = () => {
-    const astNode = Object.keys(this.hashNode).reduce(
+  public node = () => {
+    const astNode = Object.keys(this.hashedNode).reduce(
       (acc, prop: AllDefinitionNodeKeys) => {
-        if (definitionHashMap[this.kind()][prop]) {
-          acc[prop] = Object.values(this.hashNode[prop])
+        if (typeSystemHashMap[this.kind()][prop]) {
+          acc[prop] = Object.values(this.hashedNode[prop])
         } else {
-          acc[prop] = this.hashNode[prop]
+          acc[prop] = this.hashedNode[prop]
         }
         return acc
       },
@@ -178,5 +180,5 @@ export class GraphqlDefinitionEditor<
     return astNode as SupportedDefinitionNode
   }
 
-  public print = () => print(this.astNode())
+  public print = () => print(this.node())
 }

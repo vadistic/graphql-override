@@ -1,7 +1,8 @@
 import { DefinitionNode } from 'graphql'
 
 import * as R from 'ramda'
-import { definitionHashMap } from './hashmap'
+import { GraphqlDefinitionEditor } from './DefinitionEditor'
+import { typeSystemHashMap } from './hashmap'
 import { Hash, SupportedDefinitionNode } from './types'
 
 export const hashArrByName = <T extends SupportedDefinitionNode>(
@@ -15,7 +16,16 @@ export const hashArrByName = <T extends SupportedDefinitionNode>(
     {} as Hash<T>
   )
 
+export const unhashTypeDefinitions = (defs: Hash<GraphqlDefinitionEditor>) =>
+  Object.values(defs).reduce(
+    (acc, def) => {
+      acc.push(def.node())
+      return acc
+    },
+    [] as SupportedDefinitionNode[]
+  )
+
 export const isSupported = (node: DefinitionNode): node is SupportedDefinitionNode =>
-  R.has(node.kind, definitionHashMap)
+  R.has(node.kind, typeSystemHashMap)
 
 export const hasName = (name: string) => R.pathEq(['name', 'value'], name)

@@ -2,19 +2,40 @@ import {
   EnumTypeDefinitionNode,
   FieldDefinitionNode,
   ObjectTypeDefinitionNode,
-  parse,
 } from 'graphql'
 import * as prettier from 'prettier'
 import * as R from 'ramda'
 
 import { GraphqlDefinitionEditor } from '../src'
-import { SupportedDefinitionNode } from '../src/types'
+import { getDef, pretty, serialize } from './util'
 
-const pretty = (source: string) => prettier.format(source, { parser: 'graphql' })
+describe('DefinitionEditor (Basics)', () => {
+  const schema = `
+  interface BasicNode {
+    id: ID!
+    createdAt: DateTime!
+    deletedAt: DateTime
+  }`
 
-const serialize = (obj: object) => JSON.stringify(obj, null, 2)
+  const editor = new GraphqlDefinitionEditor(getDef(schema))
 
-const getDef = (source: string) => parse(source).definitions[0] as SupportedDefinitionNode
+  it('instantiate', () => {
+    expect(editor).toBeInstanceOf(GraphqlDefinitionEditor)
+  })
+
+  it('.print() matches snapshot', () => {
+    expect(editor.print()).toMatchSnapshot()
+  })
+
+  it('.print() matches source', () => {
+    expect(pretty(editor.print())).toMatch(pretty(schema))
+  })
+
+  it('.node() matches snapschot', () => {
+    const astNode = editor.node()
+    expect(serialize(astNode)).toMatchSnapshot()
+  })
+})
 
 describe('DefinitionEditor (SupportedDefinitionNode)', () => {
   // Types

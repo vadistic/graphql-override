@@ -11,7 +11,7 @@ import {
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
-import { typeSystemHashMap } from './hashmap';
+import { typeSystemHashMap } from './hashmap'
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 

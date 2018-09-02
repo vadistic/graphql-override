@@ -1,12 +1,9 @@
 import {
-  ASTKindToNode,
-  DefinitionNode,
   DirectiveNode,
   EnumValueDefinitionNode,
   FieldDefinitionNode,
   InputValueDefinitionNode,
   NamedTypeNode,
-  parse,
   print,
 } from 'graphql'
 import * as R from 'ramda'
@@ -76,6 +73,7 @@ export class GraphqlDefinitionEditor<
 
   // Helper
   public name = () => this.hashedNode.name.value
+
   public kind = () => this.hashedNode.kind
 
   public hasProp: HasProp = prop => R.has(prop, this.hashedNode)
@@ -86,6 +84,7 @@ export class GraphqlDefinitionEditor<
         `Cannot check if prop '${prop}' has '${name}',  because ${prop} does not exist on type '${this.kind()}'`
       )
     }
+
     return R.has(name, this.hashedNode[prop])
   }
 

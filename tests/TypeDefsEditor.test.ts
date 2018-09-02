@@ -3,8 +3,9 @@ import { GraphqlTypeDefsEditor } from '../src'
 import { parse, print } from 'graphql'
 
 import { schema } from './mock'
+import { serialize } from './util'
 
-describe('TypeDefsEditor', () => {
+describe('TypeDefsEditor (Basics)', () => {
   const editor = new GraphqlTypeDefsEditor(schema)
 
   it('instantiate', () => {
@@ -24,8 +25,14 @@ describe('TypeDefsEditor', () => {
 
   it('.node() matches snapschot', () => {
     const astNode = editor.node()
-    expect(JSON.stringify(astNode)).toMatchSnapshot()
+    expect(serialize(astNode)).toMatchSnapshot()
   })
+})
+
+describe('TypeDefsEditor (CRUD)', () => {
+  const editor = new GraphqlTypeDefsEditor(schema)
+
+  
 
   it('.hasDefinition() succeed', () => {
     const val = editor.hasDefinition('User')

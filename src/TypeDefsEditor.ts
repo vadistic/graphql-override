@@ -1,11 +1,6 @@
 import {
-  DefinitionNode,
   DirectiveDefinitionNode,
   DocumentNode,
-  EnumValueDefinitionNode,
-  FieldDefinitionNode,
-  InterfaceTypeDefinitionNode,
-  Location,
   parse,
   print,
   TypeDefinitionNode,
@@ -20,8 +15,8 @@ import {
   typeExtensionHashMap,
   typeSystemHashMap,
 } from './hashmap'
-import { Hash, SupportedDefinitionNode } from './types'
-import { hashArrByName, hasName, isSupported, unhashTypeDefinitions } from './util'
+import { Hash } from './types'
+import { isSupported, unhashTypeDefinitions } from './util'
 
 export type TypeDefsVariants = 'directives' | 'definitions' | 'extensions'
 
@@ -29,7 +24,7 @@ export type DefinitionEditorDirective = GraphqlDefinitionEditor<DirectiveDefinit
 export type DefinitionEditorDefinition = GraphqlDefinitionEditor<TypeDefinitionNode>
 export type DefinitionEditorExtension = GraphqlDefinitionEditor<TypeExtensionNode>
 
-type ExistInType = (type: TypeDefsVariants) => (name: string) => boolean
+type HasInType = (type: TypeDefsVariants) => (name: string) => boolean
 
 interface GetInType {
   (type: 'directives'): (name: string) => DefinitionEditorDirective
@@ -66,32 +61,32 @@ export class GraphqlTypeDefsEditor {
             R.has('name', node) ? R.path(['name', 'value'], node) : `Unnamed`
           } node of type '${node!.kind}' is not supported by the editor`
         )
-      } else {
-        if (R.has(node.kind, directiveDefinitionHashMap)) {
-          this.directives[node.name.value] = new GraphqlDefinitionEditor(node)
-        }
-        if (R.has(node.kind, typeDefinitionHashMap)) {
-          this.definitions[node.name.value] = new GraphqlDefinitionEditor(node)
-        }
-        if (R.has(node.kind, typeExtensionHashMap)) {
-          this.extensions[node.name.value] = new GraphqlDefinitionEditor(node)
-        }
+      }
+      if (R.has(node.kind, directiveDefinitionHashMap)) {
+        this.directives[node.name.value] = new GraphqlDefinitionEditor(node)
+      }
+      if (R.has(node.kind, typeDefinitionHashMap)) {
+        this.definitions[node.name.value] = new GraphqlDefinitionEditor(node)
+      }
+      if (R.has(node.kind, typeExtensionHashMap)) {
+        this.extensions[node.name.value] = new GraphqlDefinitionEditor(node)
       }
     })
   }
 
-  public existInType: ExistInType = (type: TypeDefsVariants) => name =>
+  public hasInType: HasInType = (type: TypeDefsVariants) => name =>
     R.has(name, this[type])
 
   public getInType: GetInType = type => name => this[type][name]
 
   public createInType: CreateInType = type => node => {
-    if (this.existInType(type)(node.name.value)) {
+    if (this.hasInType(type)(node.name.value)) {
       throw new Error(`Cannot create type '${node.name.value}' in ${type}
       Definition with the same name already exists.`)
-    } else {
-      this[type][node.name.value] = new GraphqlDefinitionEditor(node)
     }
+
+    this[type][node.name.value] = new GraphqlDefinitionEditor(node)
+
     return this
   }
 
@@ -102,32 +97,32 @@ export class GraphqlTypeDefsEditor {
   }
 
   public updateInType: UpdateInType = type => node => {
-    if (!this.existInType(type)(node.name.value)) {
+    if (!this.hasInType(type)(node.name.value)) {
       throw new Error(`Cannot update type '${node.name.value}' in ${type}
       Definition with this name does not exist.`)
-    } else {
-      const prev = this[type][node.name.value]
-
-      const update = new GraphqlDefinitionEditor(node)
-
-      const map = typeSystemHashMap[update.kind()]
-
-      this[type][node.name.value] = Object.assign(
-        prev,
-        R.pickBy(prop => R.prop(prop, map), update),
-        node.description ? { description: node.description } : {}
-      )
     }
+
+    const prev = this[type][node.name.value]
+    const update = new GraphqlDefinitionEditor(node)
+    const map = typeSystemHashMap[update.kind()]
+
+    this[type][node.name.value] = Object.assign(
+      prev,
+      R.pickBy(prop => R.prop(prop, map), update),
+      node.description ? { description: node.description } : {}
+    )
+
     return this
   }
 
-  public deleteInType = type => name => {
-    if (!this.existInType(type)(name)) {
+  public deleteInType: DeleteInType = type => name => {
+    if (!this.hasInType(type)(name)) {
       throw new Error(`Cannot delete type '${name}' in ${type}
       Definition with this name does not exist.`)
-    } else {
-      this[type] = R.dissoc(name, this[type])
     }
+
+    this[type] = R.dissoc(name, this[type])
+
     return this
   }
 
@@ -135,9 +130,9 @@ export class GraphqlTypeDefsEditor {
   public getDirective = this.getInType('directives')
   public getExtension = this.getInType('directives')
 
-  public hasDirective = this.existInType('directives')
-  public hasDefinition = this.existInType('definitions')
-  public hasExtension = this.existInType('extensions')
+  public hasDirective = this.hasInType('directives')
+  public hasDefinition = this.hasInType('definitions')
+  public hasExtension = this.hasInType('extensions')
 
   public rawNode = () =>
     Object.assign(this.schema, {

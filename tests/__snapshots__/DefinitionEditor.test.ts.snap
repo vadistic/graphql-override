@@ -1,5 +1,144 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DefinitionEditor (Basics) .node() matches snapschot 1`] = `
+"{
+  \\"kind\\": \\"InterfaceTypeDefinition\\",
+  \\"name\\": {
+    \\"kind\\": \\"Name\\",
+    \\"value\\": \\"BasicNode\\",
+    \\"loc\\": {
+      \\"start\\": 13,
+      \\"end\\": 22
+    }
+  },
+  \\"directives\\": [],
+  \\"fields\\": [
+    {
+      \\"kind\\": \\"FieldDefinition\\",
+      \\"name\\": {
+        \\"kind\\": \\"Name\\",
+        \\"value\\": \\"id\\",
+        \\"loc\\": {
+          \\"start\\": 29,
+          \\"end\\": 31
+        }
+      },
+      \\"arguments\\": [],
+      \\"type\\": {
+        \\"kind\\": \\"NonNullType\\",
+        \\"type\\": {
+          \\"kind\\": \\"NamedType\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"ID\\",
+            \\"loc\\": {
+              \\"start\\": 33,
+              \\"end\\": 35
+            }
+          },
+          \\"loc\\": {
+            \\"start\\": 33,
+            \\"end\\": 35
+          }
+        },
+        \\"loc\\": {
+          \\"start\\": 33,
+          \\"end\\": 36
+        }
+      },
+      \\"directives\\": [],
+      \\"loc\\": {
+        \\"start\\": 29,
+        \\"end\\": 36
+      }
+    },
+    {
+      \\"kind\\": \\"FieldDefinition\\",
+      \\"name\\": {
+        \\"kind\\": \\"Name\\",
+        \\"value\\": \\"createdAt\\",
+        \\"loc\\": {
+          \\"start\\": 41,
+          \\"end\\": 50
+        }
+      },
+      \\"arguments\\": [],
+      \\"type\\": {
+        \\"kind\\": \\"NonNullType\\",
+        \\"type\\": {
+          \\"kind\\": \\"NamedType\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"DateTime\\",
+            \\"loc\\": {
+              \\"start\\": 52,
+              \\"end\\": 60
+            }
+          },
+          \\"loc\\": {
+            \\"start\\": 52,
+            \\"end\\": 60
+          }
+        },
+        \\"loc\\": {
+          \\"start\\": 52,
+          \\"end\\": 61
+        }
+      },
+      \\"directives\\": [],
+      \\"loc\\": {
+        \\"start\\": 41,
+        \\"end\\": 61
+      }
+    },
+    {
+      \\"kind\\": \\"FieldDefinition\\",
+      \\"name\\": {
+        \\"kind\\": \\"Name\\",
+        \\"value\\": \\"deletedAt\\",
+        \\"loc\\": {
+          \\"start\\": 66,
+          \\"end\\": 75
+        }
+      },
+      \\"arguments\\": [],
+      \\"type\\": {
+        \\"kind\\": \\"NamedType\\",
+        \\"name\\": {
+          \\"kind\\": \\"Name\\",
+          \\"value\\": \\"DateTime\\",
+          \\"loc\\": {
+            \\"start\\": 77,
+            \\"end\\": 85
+          }
+        },
+        \\"loc\\": {
+          \\"start\\": 77,
+          \\"end\\": 85
+        }
+      },
+      \\"directives\\": [],
+      \\"loc\\": {
+        \\"start\\": 66,
+        \\"end\\": 85
+      }
+    }
+  ],
+  \\"loc\\": {
+    \\"start\\": 3,
+    \\"end\\": 89
+  }
+}"
+`;
+
+exports[`DefinitionEditor (Basics) .print() matches snapshot 1`] = `
+"interface BasicNode {
+  id: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}"
+`;
+
 exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node snapshot of EnumTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"EnumTypeDefinition\\",

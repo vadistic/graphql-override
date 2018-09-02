@@ -20,7 +20,7 @@ import {
 } from './types'
 import { hashArrByName, isSupported } from './util'
 
-export type HasProp = (prop: HashDefinitionNodeKeys) => (name: string) => boolean
+export type HasProp = (prop: HashDefinitionNodeKeys) => boolean
 
 export type ExistInProp = (prop: HashDefinitionNodeKeys) => (name: string) => boolean
 
@@ -52,7 +52,7 @@ export class GraphqlDefinitionEditor<
   T extends SupportedDefinitionNode = SupportedDefinitionNode
 > {
   // Type assertion only for object initialization
-  private hashedNode = {} as HashedDefinitionNode<T>
+  public hashedNode = {} as HashedDefinitionNode<T>
 
   constructor(node: SupportedDefinitionNode) {
     if (!isSupported(node)) {
@@ -78,12 +78,19 @@ export class GraphqlDefinitionEditor<
   public name = () => this.hashedNode.name.value
   public kind = () => this.hashedNode.kind
 
-  public hasProp: HasProp = prop => name => R.has(name, this.hashedNode)
+  public hasProp: HasProp = prop => R.has(prop, this.hashedNode)
 
-  public hasInProp: ExistInProp = prop => name => R.has(name, this.hashedNode[prop])
+  public hasInProp: ExistInProp = prop => name => {
+    if (!this.hasProp(prop)) {
+      throw new Error(
+        `Cannot check if prop '${prop}' has '${name}',  because ${prop} does not exist on type '${this.kind()}'`
+      )
+    }
+    return R.has(name, this.hashedNode[prop])
+  }
 
-  // TODO: Add error message
-  public getInProp: GetInProp = prop => name => R.prop(name, this.hashedNode[prop])
+  public getInProp: GetInProp = prop => name =>
+    this.hasProp(prop) && R.prop(name, this.hashedNode[prop])
 
   public createInProp: CreateInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {

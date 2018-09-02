@@ -138,61 +138,6 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot ScalarTypeDefinition 1`] = `
-"{
-  \\"kind\\": \\"ScalarTypeDefinition\\",
-  \\"name\\": {
-    \\"kind\\": \\"Name\\",
-    \\"value\\": \\"Date\\",
-    \\"loc\\": {
-      \\"start\\": 7,
-      \\"end\\": 11
-    }
-  },
-  \\"directives\\": [],
-  \\"loc\\": {
-    \\"start\\": 0,
-    \\"end\\": 11
-  }
-}"
-`;
-
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot ScalarTypeExtension 1`] = `
-"{
-  \\"kind\\": \\"ScalarTypeExtension\\",
-  \\"name\\": {
-    \\"kind\\": \\"Name\\",
-    \\"value\\": \\"Date\\",
-    \\"loc\\": {
-      \\"start\\": 14,
-      \\"end\\": 18
-    }
-  },
-  \\"directives\\": [
-    {
-      \\"kind\\": \\"Directive\\",
-      \\"name\\": {
-        \\"kind\\": \\"Name\\",
-        \\"value\\": \\"some_directive\\",
-        \\"loc\\": {
-          \\"start\\": 20,
-          \\"end\\": 34
-        }
-      },
-      \\"arguments\\": [],
-      \\"loc\\": {
-        \\"start\\": 19,
-        \\"end\\": 34
-      }
-    }
-  ],
-  \\"loc\\": {
-    \\"start\\": 0,
-    \\"end\\": 34
-  }
-}"
-`;
-
 exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of DirectiveDefinition 1`] = `
 "{
   \\"kind\\": \\"DirectiveDefinition\\",
@@ -470,7 +415,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
   \\"kind\\": \\"InterfaceTypeDefinition\\",
   \\"name\\": {
     \\"kind\\": \\"Name\\",
-    \\"value\\": \\"BssicNode\\",
+    \\"value\\": \\"BasicNode\\",
     \\"loc\\": {
       \\"start\\": 10,
       \\"end\\": 19
@@ -1237,6 +1182,61 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
   \\"loc\\": {
     \\"start\\": 0,
     \\"end\\": 126
+  }
+}"
+`;
+
+exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeDefinition 1`] = `
+"{
+  \\"kind\\": \\"ScalarTypeDefinition\\",
+  \\"name\\": {
+    \\"kind\\": \\"Name\\",
+    \\"value\\": \\"Date\\",
+    \\"loc\\": {
+      \\"start\\": 7,
+      \\"end\\": 11
+    }
+  },
+  \\"directives\\": [],
+  \\"loc\\": {
+    \\"start\\": 0,
+    \\"end\\": 11
+  }
+}"
+`;
+
+exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeExtension 1`] = `
+"{
+  \\"kind\\": \\"ScalarTypeExtension\\",
+  \\"name\\": {
+    \\"kind\\": \\"Name\\",
+    \\"value\\": \\"Date\\",
+    \\"loc\\": {
+      \\"start\\": 14,
+      \\"end\\": 18
+    }
+  },
+  \\"directives\\": [
+    {
+      \\"kind\\": \\"Directive\\",
+      \\"name\\": {
+        \\"kind\\": \\"Name\\",
+        \\"value\\": \\"some_directive\\",
+        \\"loc\\": {
+          \\"start\\": 20,
+          \\"end\\": 34
+        }
+      },
+      \\"arguments\\": [],
+      \\"loc\\": {
+        \\"start\\": 19,
+        \\"end\\": 34
+      }
+    }
+  ],
+  \\"loc\\": {
+    \\"start\\": 0,
+    \\"end\\": 34
   }
 }"
 `;

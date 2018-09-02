@@ -1,5 +1,11 @@
-import { parse } from 'graphql'
+import {
+  EnumTypeDefinitionNode,
+  FieldDefinitionNode,
+  ObjectTypeDefinitionNode,
+  parse,
+} from 'graphql'
 import * as prettier from 'prettier'
+import * as R from 'ramda'
 
 import { GraphqlDefinitionEditor } from '../src'
 import { SupportedDefinitionNode } from '../src/types'
@@ -12,7 +18,7 @@ const getDef = (source: string) => parse(source).definitions[0] as SupportedDefi
 
 describe('DefinitionEditor (SupportedDefinitionNode)', () => {
   // Types
-  it('parse, print & returns node snapshot ScalarTypeDefinition', () => {
+  it('parse, print & returns node snapshot of ScalarTypeDefinition', () => {
     const source = pretty(`
     scalar Date
     `)
@@ -41,7 +47,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
 
   it('parse, print & returns node snapshot of InterfaceTypeDefinition', () => {
     const source = pretty(`
-    interface BssicNode {
+    interface BasicNode {
       id: ID!
       createdAt: DateTime!
       deletedAt: DateTime
@@ -100,7 +106,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
 
   // TypeExtensions
 
-  it('parse, print & returns node snapshot ScalarTypeExtension', () => {
+  it('parse, print & returns node snapshot of ScalarTypeExtension', () => {
     const source = pretty(`
     extend scalar Date @some_directive
     `)
@@ -200,7 +206,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     expect(serialize(editor.node())).toMatchSnapshot()
   })
 
-  it('throw NotSupported on OperationDefinition', () => {
+  it('throw not supported error on OperationDefinition type', () => {
     const source = pretty(`
     query GetHero {
       hero {
@@ -216,5 +222,176 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     expect(() => {
       const editor = new GraphqlDefinitionEditor(def)
     }).toThrowError('not supported')
+  })
+})
+
+describe('DefinitionEditor (CRUD)', () => {
+  it('.hasProp() succeeds & fails', () => {
+    const source = pretty(`
+    input CreatePostInput {
+      title: String!
+      body: String!
+      author: User!
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    expect(editor.hasProp('values')).toBeFalsy()
+    expect(editor.hasProp('fields')).toBeTruthy()
+  })
+
+  it('.hasInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    interface BasicNode {
+      id: ID!
+      createdAt: DateTime!
+      deletedAt: DateTime
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    expect(editor.hasInProp('fields')('id')).toBeTruthy()
+    expect(editor.hasInProp('fields')('updatedAt')).toBeFalsy()
+    expect(() => {
+      editor.hasInProp('values')('createdAt')
+    }).toThrowError('not exist')
+  })
+
+  it('.getInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    const field = (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+
+    expect(editor.getInProp('fields')('id').name.value).toMatch('id')
+    expect(editor.getInProp('fields')('deletedat')).toBeFalsy()
+
+    expect(() => {
+      editor.hasInProp('values')('id')
+    }).toThrowError()
+  })
+
+  it('.createInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const fieldSource = pretty(`
+    type Notification {
+      newField: number! @hello
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    const validField = (getDef(fieldSource) as ObjectTypeDefinitionNode).fields[0]
+    const invalidField = (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+
+    // creates new field
+    expect(
+      editor
+        .createInProp('fields')(validField)
+        .hasField('newField')
+    ).toBeTruthy()
+    expect(editor.getInProp('fields')('deletedat')).toBeFalsy()
+
+    // trying to create field that already exist
+    expect(() => {
+      editor.createInProp('fields')(invalidField)
+    }).toThrowError('Cannot create')
+
+    // trying to create field on invalid prop
+    expect(() => {
+      editor.createInProp('values')(invalidField as any)
+    }).toThrowError('Cannot create')
+  })
+
+  it('.upserInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    const createfield = R.assocPath(
+      ['name', 'value'],
+      'variant',
+      (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+    )
+
+    const replaceField = R.assoc(
+      'description',
+      'Some cool description',
+      (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+    )
+
+    // creating new field
+    expect(
+      editor
+        .upsertInProp('fields')(createfield)
+        .hasField('variant')
+    ).toBeTruthy()
+
+    // replacing field
+    expect(
+      editor
+        .upsertInProp('fields')(replaceField)
+        .getField('id').description
+    ).toMatch('Some cool description')
+
+    // trying to create field on wrong prop
+    expect(() => {
+      editor.upsertInProp('values')(createfield as any)
+    }).toThrowError('Cannot upsert')
+  })
+
+  it('.deleteInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const editor = new GraphqlDefinitionEditor(getDef(source))
+
+    // deletes field
+    expect(
+      editor
+        .deleteInProp('fields')('date')
+        .hasField('date')
+    ).toBeFalsy()
+
+    // trying to delete field on invalid prop
+    expect(() => {
+      editor
+        .deleteInProp('values')('date')
+        .hasField('date')
+    }).toThrowError('Cannot delete')
+
+    // trying to delete non-existent field
+    expect(() => {
+      editor
+        .deleteInProp('fields')('user')
+        .hasField('date')
+    }).toThrowError('Cannot delete')
   })
 })

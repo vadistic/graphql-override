@@ -121,6 +121,28 @@ export class GraphqlTypeEditor<
     return this
   }
 
+  public updateInProp: CreateInProp<T> = prop => def => {
+    if (!this.hasProp(prop)) {
+      throw new Error(
+        `Cannot update ${def.name.value} in ${prop} on type ${this.name()}
+        ${this.kind()} type has no ${prop}.
+        `
+      )
+    }
+
+    if (!this.hasInProp(prop)(def.name.value)) {
+      throw new Error(
+        `Cannot update ${def.name.value} in ${prop} on type ${this.name()}
+        Value with this name does not exist.
+        `
+      )
+    }
+
+    this.hashedNode[prop][def.name.value] = def
+
+    return this
+  }
+
   public upsertInProp: UpsertInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
@@ -172,6 +194,11 @@ export class GraphqlTypeEditor<
   public createField = this.createInProp('fields')
   public createInterface = this.createInProp('interfaces')
   public createValue = this.createInProp('values')
+
+  public updateDirective = this.updateInProp('directives')
+  public updateField = this.updateInProp('fields')
+  public updateInterface = this.updateInProp('interfaces')
+  public updateValue = this.updateInProp('values')
 
   public upsertDirective = this.upsertInProp('directives')
   public upsertField = this.upsertInProp('fields')

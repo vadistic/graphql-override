@@ -38,11 +38,12 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
 
   const overrideActionTypes = tuple('create', 'update', 'upsert', 'delete')
 
-  type Actions<T> = {
-    [P in typeof overrideActionTypes[number]]: Array<
-      [{ name: NameNode; kind: KindEnum }, T]
-    >
+  interface ActionInfo {
+    name: NameNode
+    kind: KindEnum
   }
+
+  type Actions<T> = { [P in typeof overrideActionTypes[number]]: Array<[ActionInfo, T]> }
 
   const fieldActions: Actions<PropDefNode> = {
     create: [],
@@ -72,24 +73,21 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
       if (isOverrideDirective(node)) {
         const realParent = ancestors[ancestors.length - 1]
         if (isFieldDefNode(realParent)) {
-          const realGrandParent = ancestors[ancestors.length - 3] as TypeDefNode
+          const realGrandParent = ancestors[ancestors.length - 3]
           fieldActions[node.name.value].push([
-            R.props(['name', 'kind']),
+            R.pick(['name', 'kind'], realGrandParent),
             withoutDirective(R.last(path), realParent),
           ])
         }
         if (isTypeDefNode(realParent)) {
           typeActions[node.name.value].push([
-            R.props(['name', 'kind']),
+            R.pick(['name', 'kind'], realParent),
             withoutDirective(R.last(path), realParent),
           ])
         }
       }
     },
   })
-
-  console.log(fieldActions.update)
-  console.log(typeActions.update)
 
   const SchemaEditor = new GraphqlDocumentEditor(_schema)
 
@@ -104,20 +102,20 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
     }
   }
 
-  typeActions.create.forEach(([type, def]) => {
-    SchemaEditor.createInType(typeEnum(type.kind))(def)
+  typeActions.create.forEach(([info, def]) => {
+    SchemaEditor.createInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.update.forEach(([type, def]) => {
-    SchemaEditor.updateInType(typeEnum(type.kind))(def)
+  typeActions.update.forEach(([info, def]) => {
+    SchemaEditor.updateInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.upsert.forEach(([type, def]) => {
-    SchemaEditor.upsertInType(typeEnum(type.kind))(def)
+  typeActions.upsert.forEach(([info, def]) => {
+    SchemaEditor.upsertInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.delete.forEach(([type, def]) => {
-    SchemaEditor.deleteInType(typeEnum(type.kind))(type.name.value)
+  typeActions.delete.forEach(([info, def]) => {
+    SchemaEditor.deleteInType(typeEnum(info.kind))(info.name.value)
   })
 
   const fieldEnum = (kind: string) => {
@@ -134,26 +132,26 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
     }
   }
 
-  fieldActions.create.forEach(([type, field]) => {
-    SchemaEditor.getInType(typeEnum(type.kind))(type.name.value).createInProp(
+  fieldActions.create.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).createInProp(
       fieldEnum(field.kind)
     )(field)
   })
 
-  fieldActions.update.forEach(([type, field]) => {
-    SchemaEditor.getInType(typeEnum(type.kind))(type.name.value).createInProp(
+  fieldActions.update.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).updateInProp(
       fieldEnum(field.kind)
     )(field)
   })
 
-  fieldActions.upsert.forEach(([type, field]) => {
-    SchemaEditor.getInType(typeEnum(type.kind))(type.name.value).createInProp(
+  fieldActions.upsert.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).upsertInProp(
       fieldEnum(field.kind)
     )(field)
   })
 
-  fieldActions.delete.forEach(([type, field]) => {
-    SchemaEditor.getInType(typeEnum(type.kind))(type.name.value).deleteInProp(
+  fieldActions.delete.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).deleteInProp(
       fieldEnum(field.kind)
     )(field.name.value)
   })

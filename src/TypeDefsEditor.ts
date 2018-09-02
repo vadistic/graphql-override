@@ -16,7 +16,7 @@ import {
   typeSystemHashMap,
 } from './hashmap'
 import { Hash } from './types'
-import { isSupported, unhashTypeDefinitions } from './util'
+import { isSupported, unhashTypeDefinitions, validateSchemaInput } from './util'
 
 export type TypeDefsVariants = 'directives' | 'definitions' | 'extensions'
 
@@ -52,7 +52,7 @@ export class GraphqlTypeDefsEditor {
   private schema: DocumentNode
 
   constructor(schema: string | DocumentNode) {
-    this.schema = typeof schema === 'string' ? parse(schema) : schema
+    this.schema = validateSchemaInput(schema)
 
     this.schema.definitions.forEach(node => {
       if (!isSupported(node)) {

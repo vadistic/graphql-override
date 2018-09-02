@@ -1,12 +1,17 @@
 import {
+  astFromValue,
   EnumTypeDefinitionNode,
   FieldDefinitionNode,
+  Kind,
   ObjectTypeDefinitionNode,
+  parseValue,
+  typeFromAST,
 } from 'graphql'
-import * as prettier from 'prettier'
 import * as R from 'ramda'
 
 import { GraphqlDefinitionEditor } from '../src'
+import { SupportedDefinitionNode } from '../src/types'
+import { schema as fullSchema } from './mock'
 import { getDef, pretty, serialize } from './util'
 
 describe('DefinitionEditor (Basics)', () => {

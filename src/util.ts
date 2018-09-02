@@ -1,6 +1,7 @@
-import { DefinitionNode } from 'graphql'
-
+import { readFileSync, statSync } from 'fs'
+import { DefinitionNode, DocumentNode, parse } from 'graphql'
 import * as R from 'ramda'
+
 import { GraphqlDefinitionEditor } from './DefinitionEditor'
 import { typeSystemHashMap } from './hashmap'
 import { Hash, SupportedDefinitionNode } from './types'
@@ -29,3 +30,20 @@ export const isSupported = (node: DefinitionNode): node is SupportedDefinitionNo
   R.has(node.kind, typeSystemHashMap)
 
 export const hasName = (name: string) => R.pathEq(['name', 'value'], name)
+
+export const validateSchemaInput = (input: string | DocumentNode, inputName?: string) => {
+  if (typeof input === 'object' && input.kind === 'Document') {
+    return input
+  } else if (typeof input === 'string') {
+    try {
+      if (statSync(input).isFile()) {
+        return parse(readFileSync(input, 'utf-8'))
+      }
+    } catch (err) {
+      // noop - it just mean input is not a filepath
+    }
+    return parse(input)
+  } else {
+    throw new Error(`Provided invalid input argument ${inputName && `to '${inputName}'`}`)
+  }
+}

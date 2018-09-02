@@ -12,6 +12,6 @@
     "noImplicitThis": true,
     "noImplicitReturns": true
   },
-  "include": ["src/**/*.ts", "jest.config.js"],
+  "include": ["src/**/*.ts", "jest.config.js", "tests/override.test.ts"],
   "exclude": ["node_modules", "dist", "coverage"]
 }

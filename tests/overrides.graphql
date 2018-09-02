@@ -1,3 +1,5 @@
+# import * from '../src/directives.graphql'
+
 type User {
   id: ID!
   workspace: String! @update

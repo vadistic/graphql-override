@@ -1,8 +1,10 @@
 # import * from '../src/directives.graphql'
 
+directive @test on FIELD | FIELD_DEFINITION
+
 type User {
   id: ID!
-  workspace: String! @update
+  workspace: String! @update @test
   password: String!
   isReplaced: Boolean
 }

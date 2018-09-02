@@ -9,7 +9,7 @@ import {
 } from 'graphql'
 import * as R from 'ramda'
 
-import { GraphqlDefinitionEditor } from '../src'
+import { GraphqlTypeEditor } from '../src'
 import { SupportedDefinitionNode } from '../src/types'
 import { schema as fullSchema } from './mock'
 import { getDef, pretty, serialize } from './util'
@@ -22,10 +22,10 @@ describe('DefinitionEditor (Basics)', () => {
     deletedAt: DateTime
   }`
 
-  const editor = new GraphqlDefinitionEditor(getDef(schema))
+  const editor = new GraphqlTypeEditor(getDef(schema))
 
   it('instantiate', () => {
-    expect(editor).toBeInstanceOf(GraphqlDefinitionEditor)
+    expect(editor).toBeInstanceOf(GraphqlTypeEditor)
   })
 
   it('.print() matches snapshot', () => {
@@ -49,7 +49,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     scalar Date
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('ScalarTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -64,7 +64,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('ObjectTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -80,7 +80,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('InterfaceTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -92,7 +92,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     union Person = User | Candidate
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('UnionTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -108,7 +108,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('EnumTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -123,7 +123,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('InputObjectTypeDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -137,7 +137,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     extend scalar Date @some_directive
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('ScalarTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -152,7 +152,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('ObjectTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -168,7 +168,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('InterfaceTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -180,7 +180,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     extend union Person = User | Candidate
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('UnionTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -196,7 +196,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('EnumTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -211,7 +211,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('InputObjectTypeExtension')
     expect(pretty(editor.print())).toMatch(source)
@@ -225,7 +225,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
     ) on FIELD_DEFINITION | ENUM_VALUE
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.kind()).toMatch('DirectiveDefinition')
     expect(pretty(editor.print())).toMatch(source)
@@ -246,7 +246,7 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
 
     expect(def.kind).toMatch('OperationDefinition')
     expect(() => {
-      const editor = new GraphqlDefinitionEditor(def)
+      const editor = new GraphqlTypeEditor(def)
     }).toThrowError('not supported')
   })
 })
@@ -261,7 +261,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.hasProp('values')).toBeFalsy()
     expect(editor.hasProp('fields')).toBeTruthy()
@@ -276,7 +276,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     expect(editor.hasInProp('fields')('id')).toBeTruthy()
     expect(editor.hasInProp('fields')('updatedAt')).toBeFalsy()
@@ -294,7 +294,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     const field = (getDef(source) as ObjectTypeDefinitionNode).fields[0]
 
@@ -321,7 +321,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     const validField = (getDef(fieldSource) as ObjectTypeDefinitionNode).fields[0]
     const invalidField = (getDef(source) as ObjectTypeDefinitionNode).fields[0]
@@ -354,7 +354,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     const createfield = R.assocPath(
       ['name', 'value'],
@@ -397,7 +397,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }
     `)
 
-    const editor = new GraphqlDefinitionEditor(getDef(source))
+    const editor = new GraphqlTypeEditor(getDef(source))
 
     // deletes field
     expect(

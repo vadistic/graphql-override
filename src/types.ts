@@ -1,4 +1,5 @@
 import {
+  ASTKindToNode,
   DirectiveDefinitionNode,
   DirectiveNode,
   EnumValueDefinitionNode,
@@ -11,16 +12,54 @@ import {
   TypeDefinitionNode,
   TypeExtensionNode,
 } from 'graphql'
+import * as R from 'ramda'
+
 import { typeSystemHashMap } from './hashmap'
+import { tuple } from './util'
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 
+export const propDefNodes = tuple(
+  'FieldDefinition',
+  'InputValueDefinition',
+  'EnumValueDefinition'
+)
+
+const typeDefNodes = tuple(
+  'ScalarTypeDefinition',
+  'ObjectTypeDefinition',
+  'InterfaceTypeDefinition',
+  'UnionTypeDefinition',
+  'EnumTypeDefinition',
+  'InputObjectTypeDefinition',
+  'ScalarTypeExtension',
+  'ObjectTypeExtension',
+  'InterfaceTypeExtension',
+  'UnionTypeExtension',
+  'EnumTypeExtension',
+  'InputObjectTypeExtension'
+)
+
+export const directiveDefNodes = tuple('DirectiveDefinition')
+
+export type PropDefNode = ASTKindToNode[typeof propDefNodes[number]]
+export type TypeDefNode = ASTKindToNode[typeof typeDefNodes[number]]
+
+export type PropNode = PropDefNode | DirectiveNode | NamedTypeNode
+
+export type DirectiveDefNode = ASTKindToNode[typeof directiveDefNodes[number]]
+
+export const isFieldDefNode = (node: object): node is PropDefNode =>
+  R.contains(R.propOr('', 'kind', node), propDefNodes)
+
+export const isTypeDefNode = (node: object): node is TypeDefNode =>
+  R.contains(R.propOr('', 'kind', node), typeDefNodes)
+
+// Old types
 export type SupportedDefinitionNode =
   | TypeDefinitionNode
   | TypeExtensionNode
   | DirectiveDefinitionNode
-
-// Types for keys of DefinitionNode props
 
 type KeysOfUnion<T> = T extends any ? keyof T : never
 

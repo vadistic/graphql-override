@@ -13,6 +13,8 @@ import {
   AllDefinitionNodeKeys,
   HashDefinitionNodeKeys,
   HashedDefinitionNode,
+  PropDefNode,
+  PropNode,
   SupportedDefinitionNode,
 } from './types'
 import { hashArrByName, isSupported } from './util'
@@ -27,25 +29,31 @@ export interface GetInProp {
   (prop: 'fields'): (name: string) => FieldDefinitionNode | InputValueDefinitionNode
   (prop: 'interfaces' | 'types'): (name: string) => NamedTypeNode
   (prop: 'values'): (name: string) => EnumValueDefinitionNode
+  (prop: 'arguments' | 'directives' | 'fields' | 'values' | 'interfaces'): (
+    name: string
+  ) => PropNode
 }
 
 export interface CreateInProp<T extends SupportedDefinitionNode> {
-  (prop: 'arguments'): (def: InputValueDefinitionNode) => GraphqlDefinitionEditor<T>
-  (prop: 'directives'): (def: DirectiveNode) => GraphqlDefinitionEditor<T>
+  (prop: 'arguments'): (def: InputValueDefinitionNode) => GraphqlTypeEditor<T>
+  (prop: 'directives'): (def: DirectiveNode) => GraphqlTypeEditor<T>
   (prop: 'fields'): (
     def: FieldDefinitionNode | InputValueDefinitionNode
-  ) => GraphqlDefinitionEditor<T>
-  (prop: 'interfaces'): (def: NamedTypeNode) => GraphqlDefinitionEditor<T>
-  (prop: 'values'): (def: EnumValueDefinitionNode) => GraphqlDefinitionEditor<T>
+  ) => GraphqlTypeEditor<T>
+  (prop: 'interfaces'): (def: NamedTypeNode) => GraphqlTypeEditor<T>
+  (prop: 'values'): (def: EnumValueDefinitionNode) => GraphqlTypeEditor<T>
+  (prop: 'arguments' | 'directives' | 'fields' | 'values' | 'interfaces'): (
+    def: PropNode
+  ) => GraphqlTypeEditor<T>
 }
 
 export type UpsertInProp<T extends SupportedDefinitionNode> = CreateInProp<T>
 
 export type DeleteInType<T extends SupportedDefinitionNode> = (
   prop: HashDefinitionNodeKeys
-) => (name: string) => GraphqlDefinitionEditor<T>
+) => (name: string) => GraphqlTypeEditor<T>
 
-export class GraphqlDefinitionEditor<
+export class GraphqlTypeEditor<
   T extends SupportedDefinitionNode = SupportedDefinitionNode
 > {
   // Type assertion only for object initialization

@@ -2,9 +2,12 @@ import { readFileSync, statSync } from 'fs'
 import { DefinitionNode, DocumentNode, parse } from 'graphql'
 import * as R from 'ramda'
 
-import { GraphqlDefinitionEditor } from './DefinitionEditor'
 import { typeSystemHashMap } from './hashmap'
+import { GraphqlTypeEditor } from './TypeEditor'
 import { Hash, SupportedDefinitionNode } from './types'
+
+export type Lit = string | number | boolean | undefined | null | void | {}
+export const tuple = <T extends Lit[]>(...args: T) => args
 
 export const hashArrByName = <T extends SupportedDefinitionNode>(
   defs: ReadonlyArray<T>
@@ -17,7 +20,7 @@ export const hashArrByName = <T extends SupportedDefinitionNode>(
     {} as Hash<T>
   )
 
-export const unhashTypeDefinitions = (defs: Hash<GraphqlDefinitionEditor>) =>
+export const unhashTypeDefinitions = (defs: Hash<GraphqlTypeEditor>) =>
   Object.values(defs).reduce(
     (acc, def) => {
       acc.push(def.node())

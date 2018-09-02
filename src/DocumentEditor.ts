@@ -8,46 +8,50 @@ import {
 } from 'graphql'
 import * as R from 'ramda'
 
-import { GraphqlDefinitionEditor } from './DefinitionEditor'
 import {
   directiveDefinitionHashMap,
   typeDefinitionHashMap,
   typeExtensionHashMap,
   typeSystemHashMap,
 } from './hashmap'
-import { Hash } from './types'
+import { GraphqlTypeEditor } from './TypeEditor'
+import { Hash, SupportedDefinitionNode } from './types'
 import { isSupported, unhashTypeDefinitions, validateSchemaInput } from './util'
 
 export type TypeDefsVariants = 'directives' | 'definitions' | 'extensions'
 
-export type DefinitionEditorDirective = GraphqlDefinitionEditor<DirectiveDefinitionNode>
-export type DefinitionEditorDefinition = GraphqlDefinitionEditor<TypeDefinitionNode>
-export type DefinitionEditorExtension = GraphqlDefinitionEditor<TypeExtensionNode>
+export type TypeEditorDirective = GraphqlTypeEditor<DirectiveDefinitionNode>
+export type TypeEditorDefinition = GraphqlTypeEditor<TypeDefinitionNode>
+export type TypeEditorExtension = GraphqlTypeEditor<TypeExtensionNode>
 
 type HasInType = (type: TypeDefsVariants) => (name: string) => boolean
 
 interface GetInType {
-  (type: 'directives'): (name: string) => DefinitionEditorDirective
-  (type: 'definitions'): (name: string) => DefinitionEditorDefinition
-  (type: 'extensions'): (name: string) => DefinitionEditorExtension
+  (type: 'directives'): (name: string) => TypeEditorDirective
+  (type: 'definitions'): (name: string) => TypeEditorDefinition
+  (type: 'extensions'): (name: string) => TypeEditorExtension
+  (type: 'definitions' | 'extensions' | 'directives'): (name: string) => GraphqlTypeEditor
 }
 
 interface CreateInType {
-  (type: 'directives'): (node: DirectiveDefinitionNode) => GraphqlTypeDefsEditor
-  (type: 'definitions'): (node: TypeDefinitionNode) => GraphqlTypeDefsEditor
-  (type: 'extensions'): (node: TypeExtensionNode) => GraphqlTypeDefsEditor
+  (type: 'definitions'): (node: TypeDefinitionNode) => GraphqlDocumentEditor
+  (type: 'extensions'): (node: TypeExtensionNode) => GraphqlDocumentEditor
+  (type: 'directives'): (node: DirectiveDefinitionNode) => GraphqlDocumentEditor
+  (type: 'definitions' | 'extensions' | 'directives'): (
+    node: SupportedDefinitionNode
+  ) => GraphqlDocumentEditor
 }
 
 type UpsertInType = CreateInType
 
 type UpdateInType = CreateInType
 
-type DeleteInType = (type: TypeDefsVariants) => (name: string) => GraphqlTypeDefsEditor
+type DeleteInType = (type: TypeDefsVariants) => (name: string) => GraphqlDocumentEditor
 
-export class GraphqlTypeDefsEditor {
-  private directives: Hash<DefinitionEditorDirective> = {}
-  private definitions: Hash<DefinitionEditorDefinition> = {}
-  private extensions: Hash<DefinitionEditorExtension> = {}
+export class GraphqlDocumentEditor {
+  private directives: Hash<TypeEditorDirective> = {}
+  private definitions: Hash<TypeEditorDefinition> = {}
+  private extensions: Hash<TypeEditorExtension> = {}
 
   private schema: DocumentNode
 
@@ -63,13 +67,13 @@ export class GraphqlTypeDefsEditor {
         )
       }
       if (R.has(node.kind, directiveDefinitionHashMap)) {
-        this.directives[node.name.value] = new GraphqlDefinitionEditor(node)
+        this.directives[node.name.value] = new GraphqlTypeEditor(node)
       }
       if (R.has(node.kind, typeDefinitionHashMap)) {
-        this.definitions[node.name.value] = new GraphqlDefinitionEditor(node)
+        this.definitions[node.name.value] = new GraphqlTypeEditor(node)
       }
       if (R.has(node.kind, typeExtensionHashMap)) {
-        this.extensions[node.name.value] = new GraphqlDefinitionEditor(node)
+        this.extensions[node.name.value] = new GraphqlTypeEditor(node)
       }
     })
   }
@@ -85,13 +89,13 @@ export class GraphqlTypeDefsEditor {
       Definition with the same name already exists.`)
     }
 
-    this[type][node.name.value] = new GraphqlDefinitionEditor(node)
+    this[type][node.name.value] = new GraphqlTypeEditor(node)
 
     return this
   }
 
   public upsertInType: UpsertInType = type => node => {
-    this[type][node.name.value] = new GraphqlDefinitionEditor(node)
+    this[type][node.name.value] = new GraphqlTypeEditor(node)
 
     return this
   }
@@ -103,7 +107,7 @@ export class GraphqlTypeDefsEditor {
     }
 
     const prev = this[type][node.name.value]
-    const update = new GraphqlDefinitionEditor(node)
+    const update = new GraphqlTypeEditor(node)
     const map = typeSystemHashMap[update.kind()]
 
     this[type][node.name.value] = Object.assign(

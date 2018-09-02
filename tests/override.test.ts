@@ -1,6 +1,4 @@
-import { parse } from 'graphql'
-import * as path from 'path'
-
+import { typeSystemHashMap } from '../src/hashmap'
 import { graphQLOverride } from '../src/override'
 import { overrides, schema } from './mock'
 

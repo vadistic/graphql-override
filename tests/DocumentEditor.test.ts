@@ -1,4 +1,4 @@
-import { GraphqlTypeDefsEditor } from '../src'
+import { GraphqlDocumentEditor } from '../src'
 
 import { parse, print } from 'graphql'
 
@@ -6,10 +6,10 @@ import { schema } from './mock'
 import { serialize } from './util'
 
 describe('TypeDefsEditor (Basics)', () => {
-  const editor = new GraphqlTypeDefsEditor(schema)
+  const editor = new GraphqlDocumentEditor(schema)
 
   it('instantiate', () => {
-    expect(editor).toBeInstanceOf(GraphqlTypeDefsEditor)
+    expect(editor).toBeInstanceOf(GraphqlDocumentEditor)
   })
 
   it('.print() matches snapshot', () => {
@@ -30,9 +30,7 @@ describe('TypeDefsEditor (Basics)', () => {
 })
 
 describe('TypeDefsEditor (CRUD)', () => {
-  const editor = new GraphqlTypeDefsEditor(schema)
-
-  
+  const editor = new GraphqlDocumentEditor(schema)
 
   it('.hasDefinition() succeed', () => {
     const val = editor.hasDefinition('User')

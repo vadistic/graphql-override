@@ -1,3 +1,3 @@
-export * from './DefinitionEditor'
-export * from './TypeDefsEditor'
+export * from './TypeEditor'
+export * from './DocumentEditor'
 export * from './override'

@@ -492,7 +492,7 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"InputValueDefinition\\",
               \\"name\\": {
                 \\"kind\\": \\"Name\\",
-                \\"value\\": \\"body\\",
+                \\"value\\": \\"data\\",
                 \\"loc\\": {
                   \\"start\\": 262,
                   \\"end\\": 266
@@ -502,21 +502,21 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"NamedType\\",
                 \\"name\\": {
                   \\"kind\\": \\"Name\\",
-                  \\"value\\": \\"String\\",
+                  \\"value\\": \\"createTweetInput\\",
                   \\"loc\\": {
                     \\"start\\": 268,
-                    \\"end\\": 274
+                    \\"end\\": 284
                   }
                 },
                 \\"loc\\": {
                   \\"start\\": 268,
-                  \\"end\\": 274
+                  \\"end\\": 284
                 }
               },
               \\"directives\\": [],
               \\"loc\\": {
                 \\"start\\": 262,
-                \\"end\\": 274
+                \\"end\\": 284
               }
             }
           ],
@@ -526,19 +526,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Tweet\\",
               \\"loc\\": {
-                \\"start\\": 277,
-                \\"end\\": 282
+                \\"start\\": 287,
+                \\"end\\": 292
               }
             },
             \\"loc\\": {
-              \\"start\\": 277,
-              \\"end\\": 282
+              \\"start\\": 287,
+              \\"end\\": 292
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
             \\"start\\": 250,
-            \\"end\\": 282
+            \\"end\\": 292
           }
         },
         {
@@ -547,8 +547,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"deleteTweet\\",
             \\"loc\\": {
-              \\"start\\": 285,
-              \\"end\\": 296
+              \\"start\\": 295,
+              \\"end\\": 306
             }
           },
           \\"arguments\\": [
@@ -558,8 +558,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"Name\\",
                 \\"value\\": \\"id\\",
                 \\"loc\\": {
-                  \\"start\\": 297,
-                  \\"end\\": 299
+                  \\"start\\": 307,
+                  \\"end\\": 309
                 }
               },
               \\"type\\": {
@@ -570,24 +570,24 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                     \\"kind\\": \\"Name\\",
                     \\"value\\": \\"ID\\",
                     \\"loc\\": {
-                      \\"start\\": 301,
-                      \\"end\\": 303
+                      \\"start\\": 311,
+                      \\"end\\": 313
                     }
                   },
                   \\"loc\\": {
-                    \\"start\\": 301,
-                    \\"end\\": 303
+                    \\"start\\": 311,
+                    \\"end\\": 313
                   }
                 },
                 \\"loc\\": {
-                  \\"start\\": 301,
-                  \\"end\\": 304
+                  \\"start\\": 311,
+                  \\"end\\": 314
                 }
               },
               \\"directives\\": [],
               \\"loc\\": {
-                \\"start\\": 297,
-                \\"end\\": 304
+                \\"start\\": 307,
+                \\"end\\": 314
               }
             }
           ],
@@ -597,19 +597,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Tweet\\",
               \\"loc\\": {
-                \\"start\\": 307,
-                \\"end\\": 312
+                \\"start\\": 317,
+                \\"end\\": 322
               }
             },
             \\"loc\\": {
-              \\"start\\": 307,
-              \\"end\\": 312
+              \\"start\\": 317,
+              \\"end\\": 322
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 285,
-            \\"end\\": 312
+            \\"start\\": 295,
+            \\"end\\": 322
           }
         },
         {
@@ -618,8 +618,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"markTweetRead\\",
             \\"loc\\": {
-              \\"start\\": 315,
-              \\"end\\": 328
+              \\"start\\": 325,
+              \\"end\\": 338
             }
           },
           \\"arguments\\": [
@@ -629,8 +629,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"Name\\",
                 \\"value\\": \\"id\\",
                 \\"loc\\": {
-                  \\"start\\": 329,
-                  \\"end\\": 331
+                  \\"start\\": 339,
+                  \\"end\\": 341
                 }
               },
               \\"type\\": {
@@ -641,24 +641,24 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                     \\"kind\\": \\"Name\\",
                     \\"value\\": \\"ID\\",
                     \\"loc\\": {
-                      \\"start\\": 333,
-                      \\"end\\": 335
+                      \\"start\\": 343,
+                      \\"end\\": 345
                     }
                   },
                   \\"loc\\": {
-                    \\"start\\": 333,
-                    \\"end\\": 335
+                    \\"start\\": 343,
+                    \\"end\\": 345
                   }
                 },
                 \\"loc\\": {
-                  \\"start\\": 333,
-                  \\"end\\": 336
+                  \\"start\\": 343,
+                  \\"end\\": 346
                 }
               },
               \\"directives\\": [],
               \\"loc\\": {
-                \\"start\\": 329,
-                \\"end\\": 336
+                \\"start\\": 339,
+                \\"end\\": 346
               }
             }
           ],
@@ -668,25 +668,25 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Boolean\\",
               \\"loc\\": {
-                \\"start\\": 339,
-                \\"end\\": 346
+                \\"start\\": 349,
+                \\"end\\": 356
               }
             },
             \\"loc\\": {
-              \\"start\\": 339,
-              \\"end\\": 346
+              \\"start\\": 349,
+              \\"end\\": 356
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 315,
-            \\"end\\": 346
+            \\"start\\": 325,
+            \\"end\\": 356
           }
         }
       ],
       \\"loc\\": {
         \\"start\\": 232,
-        \\"end\\": 348
+        \\"end\\": 358
       }
     },
     {
@@ -695,8 +695,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Tweet\\",
         \\"loc\\": {
-          \\"start\\": 355,
-          \\"end\\": 360
+          \\"start\\": 365,
+          \\"end\\": 370
         }
       },
       \\"interfaces\\": [],
@@ -708,8 +708,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"id\\",
             \\"loc\\": {
-              \\"start\\": 365,
-              \\"end\\": 367
+              \\"start\\": 375,
+              \\"end\\": 377
             }
           },
           \\"arguments\\": [],
@@ -721,24 +721,24 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"Name\\",
                 \\"value\\": \\"ID\\",
                 \\"loc\\": {
-                  \\"start\\": 369,
-                  \\"end\\": 371
+                  \\"start\\": 379,
+                  \\"end\\": 381
                 }
               },
               \\"loc\\": {
-                \\"start\\": 369,
-                \\"end\\": 371
+                \\"start\\": 379,
+                \\"end\\": 381
               }
             },
             \\"loc\\": {
-              \\"start\\": 369,
-              \\"end\\": 372
+              \\"start\\": 379,
+              \\"end\\": 382
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 365,
-            \\"end\\": 372
+            \\"start\\": 375,
+            \\"end\\": 382
           }
         },
         {
@@ -747,30 +747,83 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"body\\",
             \\"loc\\": {
-              \\"start\\": 375,
-              \\"end\\": 379
+              \\"start\\": 385,
+              \\"end\\": 389
             }
           },
           \\"arguments\\": [],
           \\"type\\": {
-            \\"kind\\": \\"NamedType\\",
-            \\"name\\": {
-              \\"kind\\": \\"Name\\",
-              \\"value\\": \\"String\\",
+            \\"kind\\": \\"NonNullType\\",
+            \\"type\\": {
+              \\"kind\\": \\"NamedType\\",
+              \\"name\\": {
+                \\"kind\\": \\"Name\\",
+                \\"value\\": \\"String\\",
+                \\"loc\\": {
+                  \\"start\\": 391,
+                  \\"end\\": 397
+                }
+              },
               \\"loc\\": {
-                \\"start\\": 381,
-                \\"end\\": 387
+                \\"start\\": 391,
+                \\"end\\": 397
               }
             },
             \\"loc\\": {
-              \\"start\\": 381,
-              \\"end\\": 387
+              \\"start\\": 391,
+              \\"end\\": 398
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 375,
-            \\"end\\": 387
+            \\"start\\": 385,
+            \\"end\\": 398
+          }
+        },
+        {
+          \\"kind\\": \\"FieldDefinition\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"tags\\",
+            \\"loc\\": {
+              \\"start\\": 401,
+              \\"end\\": 405
+            }
+          },
+          \\"arguments\\": [],
+          \\"type\\": {
+            \\"kind\\": \\"NonNullType\\",
+            \\"type\\": {
+              \\"kind\\": \\"ListType\\",
+              \\"type\\": {
+                \\"kind\\": \\"NamedType\\",
+                \\"name\\": {
+                  \\"kind\\": \\"Name\\",
+                  \\"value\\": \\"String\\",
+                  \\"loc\\": {
+                    \\"start\\": 408,
+                    \\"end\\": 414
+                  }
+                },
+                \\"loc\\": {
+                  \\"start\\": 408,
+                  \\"end\\": 414
+                }
+              },
+              \\"loc\\": {
+                \\"start\\": 407,
+                \\"end\\": 415
+              }
+            },
+            \\"loc\\": {
+              \\"start\\": 407,
+              \\"end\\": 416
+            }
+          },
+          \\"directives\\": [],
+          \\"loc\\": {
+            \\"start\\": 401,
+            \\"end\\": 416
           }
         },
         {
@@ -779,71 +832,7 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"date\\",
             \\"loc\\": {
-              \\"start\\": 390,
-              \\"end\\": 394
-            }
-          },
-          \\"arguments\\": [],
-          \\"type\\": {
-            \\"kind\\": \\"NamedType\\",
-            \\"name\\": {
-              \\"kind\\": \\"Name\\",
-              \\"value\\": \\"Date\\",
-              \\"loc\\": {
-                \\"start\\": 396,
-                \\"end\\": 400
-              }
-            },
-            \\"loc\\": {
-              \\"start\\": 396,
-              \\"end\\": 400
-            }
-          },
-          \\"directives\\": [],
-          \\"loc\\": {
-            \\"start\\": 390,
-            \\"end\\": 400
-          }
-        },
-        {
-          \\"kind\\": \\"FieldDefinition\\",
-          \\"name\\": {
-            \\"kind\\": \\"Name\\",
-            \\"value\\": \\"Author\\",
-            \\"loc\\": {
-              \\"start\\": 403,
-              \\"end\\": 409
-            }
-          },
-          \\"arguments\\": [],
-          \\"type\\": {
-            \\"kind\\": \\"NamedType\\",
-            \\"name\\": {
-              \\"kind\\": \\"Name\\",
-              \\"value\\": \\"User\\",
-              \\"loc\\": {
-                \\"start\\": 411,
-                \\"end\\": 415
-              }
-            },
-            \\"loc\\": {
-              \\"start\\": 411,
-              \\"end\\": 415
-            }
-          },
-          \\"directives\\": [],
-          \\"loc\\": {
-            \\"start\\": 403,
-            \\"end\\": 415
-          }
-        },
-        {
-          \\"kind\\": \\"FieldDefinition\\",
-          \\"name\\": {
-            \\"kind\\": \\"Name\\",
-            \\"value\\": \\"Stats\\",
-            \\"loc\\": {
-              \\"start\\": 418,
+              \\"start\\": 419,
               \\"end\\": 423
             }
           },
@@ -852,7 +841,7 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"NamedType\\",
             \\"name\\": {
               \\"kind\\": \\"Name\\",
-              \\"value\\": \\"Stat\\",
+              \\"value\\": \\"Date\\",
               \\"loc\\": {
                 \\"start\\": 425,
                 \\"end\\": 429
@@ -865,14 +854,172 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 418,
+            \\"start\\": 419,
             \\"end\\": 429
+          }
+        },
+        {
+          \\"kind\\": \\"FieldDefinition\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"Author\\",
+            \\"loc\\": {
+              \\"start\\": 432,
+              \\"end\\": 438
+            }
+          },
+          \\"arguments\\": [],
+          \\"type\\": {
+            \\"kind\\": \\"NamedType\\",
+            \\"name\\": {
+              \\"kind\\": \\"Name\\",
+              \\"value\\": \\"User\\",
+              \\"loc\\": {
+                \\"start\\": 440,
+                \\"end\\": 444
+              }
+            },
+            \\"loc\\": {
+              \\"start\\": 440,
+              \\"end\\": 444
+            }
+          },
+          \\"directives\\": [],
+          \\"loc\\": {
+            \\"start\\": 432,
+            \\"end\\": 444
+          }
+        },
+        {
+          \\"kind\\": \\"FieldDefinition\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"Stats\\",
+            \\"loc\\": {
+              \\"start\\": 447,
+              \\"end\\": 452
+            }
+          },
+          \\"arguments\\": [],
+          \\"type\\": {
+            \\"kind\\": \\"NamedType\\",
+            \\"name\\": {
+              \\"kind\\": \\"Name\\",
+              \\"value\\": \\"Stat\\",
+              \\"loc\\": {
+                \\"start\\": 454,
+                \\"end\\": 458
+              }
+            },
+            \\"loc\\": {
+              \\"start\\": 454,
+              \\"end\\": 458
+            }
+          },
+          \\"directives\\": [],
+          \\"loc\\": {
+            \\"start\\": 447,
+            \\"end\\": 458
           }
         }
       ],
       \\"loc\\": {
-        \\"start\\": 350,
-        \\"end\\": 431
+        \\"start\\": 360,
+        \\"end\\": 460
+      }
+    },
+    {
+      \\"kind\\": \\"InputObjectTypeDefinition\\",
+      \\"name\\": {
+        \\"kind\\": \\"Name\\",
+        \\"value\\": \\"createTweetInput\\",
+        \\"loc\\": {
+          \\"start\\": 468,
+          \\"end\\": 484
+        }
+      },
+      \\"directives\\": [],
+      \\"fields\\": [
+        {
+          \\"kind\\": \\"InputValueDefinition\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"body\\",
+            \\"loc\\": {
+              \\"start\\": 489,
+              \\"end\\": 493
+            }
+          },
+          \\"type\\": {
+            \\"kind\\": \\"NonNullType\\",
+            \\"type\\": {
+              \\"kind\\": \\"NamedType\\",
+              \\"name\\": {
+                \\"kind\\": \\"Name\\",
+                \\"value\\": \\"String\\",
+                \\"loc\\": {
+                  \\"start\\": 495,
+                  \\"end\\": 501
+                }
+              },
+              \\"loc\\": {
+                \\"start\\": 495,
+                \\"end\\": 501
+              }
+            },
+            \\"loc\\": {
+              \\"start\\": 495,
+              \\"end\\": 502
+            }
+          },
+          \\"directives\\": [],
+          \\"loc\\": {
+            \\"start\\": 489,
+            \\"end\\": 502
+          }
+        },
+        {
+          \\"kind\\": \\"InputValueDefinition\\",
+          \\"name\\": {
+            \\"kind\\": \\"Name\\",
+            \\"value\\": \\"tags\\",
+            \\"loc\\": {
+              \\"start\\": 505,
+              \\"end\\": 509
+            }
+          },
+          \\"type\\": {
+            \\"kind\\": \\"ListType\\",
+            \\"type\\": {
+              \\"kind\\": \\"NamedType\\",
+              \\"name\\": {
+                \\"kind\\": \\"Name\\",
+                \\"value\\": \\"String\\",
+                \\"loc\\": {
+                  \\"start\\": 512,
+                  \\"end\\": 518
+                }
+              },
+              \\"loc\\": {
+                \\"start\\": 512,
+                \\"end\\": 518
+              }
+            },
+            \\"loc\\": {
+              \\"start\\": 511,
+              \\"end\\": 519
+            }
+          },
+          \\"directives\\": [],
+          \\"loc\\": {
+            \\"start\\": 505,
+            \\"end\\": 519
+          }
+        }
+      ],
+      \\"loc\\": {
+        \\"start\\": 462,
+        \\"end\\": 521
       }
     },
     {
@@ -881,8 +1028,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"User\\",
         \\"loc\\": {
-          \\"start\\": 438,
-          \\"end\\": 442
+          \\"start\\": 528,
+          \\"end\\": 532
         }
       },
       \\"interfaces\\": [],
@@ -894,8 +1041,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"id\\",
             \\"loc\\": {
-              \\"start\\": 447,
-              \\"end\\": 449
+              \\"start\\": 537,
+              \\"end\\": 539
             }
           },
           \\"arguments\\": [],
@@ -907,24 +1054,24 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"Name\\",
                 \\"value\\": \\"ID\\",
                 \\"loc\\": {
-                  \\"start\\": 451,
-                  \\"end\\": 453
+                  \\"start\\": 541,
+                  \\"end\\": 543
                 }
               },
               \\"loc\\": {
-                \\"start\\": 451,
-                \\"end\\": 453
+                \\"start\\": 541,
+                \\"end\\": 543
               }
             },
             \\"loc\\": {
-              \\"start\\": 451,
-              \\"end\\": 454
+              \\"start\\": 541,
+              \\"end\\": 544
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 447,
-            \\"end\\": 454
+            \\"start\\": 537,
+            \\"end\\": 544
           }
         },
         {
@@ -933,8 +1080,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"username\\",
             \\"loc\\": {
-              \\"start\\": 457,
-              \\"end\\": 465
+              \\"start\\": 547,
+              \\"end\\": 555
             }
           },
           \\"arguments\\": [],
@@ -944,19 +1091,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 467,
-                \\"end\\": 473
+                \\"start\\": 557,
+                \\"end\\": 563
               }
             },
             \\"loc\\": {
-              \\"start\\": 467,
-              \\"end\\": 473
+              \\"start\\": 557,
+              \\"end\\": 563
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 457,
-            \\"end\\": 473
+            \\"start\\": 547,
+            \\"end\\": 563
           }
         },
         {
@@ -965,8 +1112,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"first_name\\",
             \\"loc\\": {
-              \\"start\\": 476,
-              \\"end\\": 486
+              \\"start\\": 566,
+              \\"end\\": 576
             }
           },
           \\"arguments\\": [],
@@ -976,19 +1123,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 488,
-                \\"end\\": 494
+                \\"start\\": 578,
+                \\"end\\": 584
               }
             },
             \\"loc\\": {
-              \\"start\\": 488,
-              \\"end\\": 494
+              \\"start\\": 578,
+              \\"end\\": 584
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 476,
-            \\"end\\": 494
+            \\"start\\": 566,
+            \\"end\\": 584
           }
         },
         {
@@ -997,8 +1144,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"last_name\\",
             \\"loc\\": {
-              \\"start\\": 497,
-              \\"end\\": 506
+              \\"start\\": 587,
+              \\"end\\": 596
             }
           },
           \\"arguments\\": [],
@@ -1008,19 +1155,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 508,
-                \\"end\\": 514
+                \\"start\\": 598,
+                \\"end\\": 604
               }
             },
             \\"loc\\": {
-              \\"start\\": 508,
-              \\"end\\": 514
+              \\"start\\": 598,
+              \\"end\\": 604
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 497,
-            \\"end\\": 514
+            \\"start\\": 587,
+            \\"end\\": 604
           }
         },
         {
@@ -1029,8 +1176,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"full_name\\",
             \\"loc\\": {
-              \\"start\\": 517,
-              \\"end\\": 526
+              \\"start\\": 607,
+              \\"end\\": 616
             }
           },
           \\"arguments\\": [],
@@ -1040,19 +1187,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 528,
-                \\"end\\": 534
+                \\"start\\": 618,
+                \\"end\\": 624
               }
             },
             \\"loc\\": {
-              \\"start\\": 528,
-              \\"end\\": 534
+              \\"start\\": 618,
+              \\"end\\": 624
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 517,
-            \\"end\\": 534
+            \\"start\\": 607,
+            \\"end\\": 624
           }
         },
         {
@@ -1061,8 +1208,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"name\\",
             \\"loc\\": {
-              \\"start\\": 537,
-              \\"end\\": 541
+              \\"start\\": 627,
+              \\"end\\": 631
             }
           },
           \\"arguments\\": [],
@@ -1072,13 +1219,13 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 543,
-                \\"end\\": 549
+                \\"start\\": 633,
+                \\"end\\": 639
               }
             },
             \\"loc\\": {
-              \\"start\\": 543,
-              \\"end\\": 549
+              \\"start\\": 633,
+              \\"end\\": 639
             }
           },
           \\"directives\\": [
@@ -1088,20 +1235,20 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
                 \\"kind\\": \\"Name\\",
                 \\"value\\": \\"deprecated\\",
                 \\"loc\\": {
-                  \\"start\\": 551,
-                  \\"end\\": 561
+                  \\"start\\": 641,
+                  \\"end\\": 651
                 }
               },
               \\"arguments\\": [],
               \\"loc\\": {
-                \\"start\\": 550,
-                \\"end\\": 561
+                \\"start\\": 640,
+                \\"end\\": 651
               }
             }
           ],
           \\"loc\\": {
-            \\"start\\": 537,
-            \\"end\\": 561
+            \\"start\\": 627,
+            \\"end\\": 651
           }
         },
         {
@@ -1110,8 +1257,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"avatar_url\\",
             \\"loc\\": {
-              \\"start\\": 564,
-              \\"end\\": 574
+              \\"start\\": 654,
+              \\"end\\": 664
             }
           },
           \\"arguments\\": [],
@@ -1121,25 +1268,25 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Url\\",
               \\"loc\\": {
-                \\"start\\": 576,
-                \\"end\\": 579
+                \\"start\\": 666,
+                \\"end\\": 669
               }
             },
             \\"loc\\": {
-              \\"start\\": 576,
-              \\"end\\": 579
+              \\"start\\": 666,
+              \\"end\\": 669
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 564,
-            \\"end\\": 579
+            \\"start\\": 654,
+            \\"end\\": 669
           }
         }
       ],
       \\"loc\\": {
-        \\"start\\": 433,
-        \\"end\\": 581
+        \\"start\\": 523,
+        \\"end\\": 671
       }
     },
     {
@@ -1148,8 +1295,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Stat\\",
         \\"loc\\": {
-          \\"start\\": 588,
-          \\"end\\": 592
+          \\"start\\": 678,
+          \\"end\\": 682
         }
       },
       \\"interfaces\\": [],
@@ -1161,8 +1308,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"views\\",
             \\"loc\\": {
-              \\"start\\": 597,
-              \\"end\\": 602
+              \\"start\\": 687,
+              \\"end\\": 692
             }
           },
           \\"arguments\\": [],
@@ -1172,19 +1319,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Int\\",
               \\"loc\\": {
-                \\"start\\": 604,
-                \\"end\\": 607
+                \\"start\\": 694,
+                \\"end\\": 697
               }
             },
             \\"loc\\": {
-              \\"start\\": 604,
-              \\"end\\": 607
+              \\"start\\": 694,
+              \\"end\\": 697
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 597,
-            \\"end\\": 607
+            \\"start\\": 687,
+            \\"end\\": 697
           }
         },
         {
@@ -1193,8 +1340,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"likes\\",
             \\"loc\\": {
-              \\"start\\": 610,
-              \\"end\\": 615
+              \\"start\\": 700,
+              \\"end\\": 705
             }
           },
           \\"arguments\\": [],
@@ -1204,19 +1351,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Int\\",
               \\"loc\\": {
-                \\"start\\": 617,
-                \\"end\\": 620
+                \\"start\\": 707,
+                \\"end\\": 710
               }
             },
             \\"loc\\": {
-              \\"start\\": 617,
-              \\"end\\": 620
+              \\"start\\": 707,
+              \\"end\\": 710
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 610,
-            \\"end\\": 620
+            \\"start\\": 700,
+            \\"end\\": 710
           }
         },
         {
@@ -1225,8 +1372,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"retweets\\",
             \\"loc\\": {
-              \\"start\\": 623,
-              \\"end\\": 631
+              \\"start\\": 713,
+              \\"end\\": 721
             }
           },
           \\"arguments\\": [],
@@ -1236,19 +1383,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Int\\",
               \\"loc\\": {
-                \\"start\\": 633,
-                \\"end\\": 636
+                \\"start\\": 723,
+                \\"end\\": 726
               }
             },
             \\"loc\\": {
-              \\"start\\": 633,
-              \\"end\\": 636
+              \\"start\\": 723,
+              \\"end\\": 726
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 623,
-            \\"end\\": 636
+            \\"start\\": 713,
+            \\"end\\": 726
           }
         },
         {
@@ -1257,8 +1404,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"responses\\",
             \\"loc\\": {
-              \\"start\\": 639,
-              \\"end\\": 648
+              \\"start\\": 729,
+              \\"end\\": 738
             }
           },
           \\"arguments\\": [],
@@ -1268,25 +1415,25 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Int\\",
               \\"loc\\": {
-                \\"start\\": 650,
-                \\"end\\": 653
+                \\"start\\": 740,
+                \\"end\\": 743
               }
             },
             \\"loc\\": {
-              \\"start\\": 650,
-              \\"end\\": 653
+              \\"start\\": 740,
+              \\"end\\": 743
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 639,
-            \\"end\\": 653
+            \\"start\\": 729,
+            \\"end\\": 743
           }
         }
       ],
       \\"loc\\": {
-        \\"start\\": 583,
-        \\"end\\": 655
+        \\"start\\": 673,
+        \\"end\\": 745
       }
     },
     {
@@ -1295,8 +1442,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Notification\\",
         \\"loc\\": {
-          \\"start\\": 662,
-          \\"end\\": 674
+          \\"start\\": 752,
+          \\"end\\": 764
         }
       },
       \\"interfaces\\": [],
@@ -1308,8 +1455,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"id\\",
             \\"loc\\": {
-              \\"start\\": 679,
-              \\"end\\": 681
+              \\"start\\": 769,
+              \\"end\\": 771
             }
           },
           \\"arguments\\": [],
@@ -1319,19 +1466,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"ID\\",
               \\"loc\\": {
-                \\"start\\": 683,
-                \\"end\\": 685
+                \\"start\\": 773,
+                \\"end\\": 775
               }
             },
             \\"loc\\": {
-              \\"start\\": 683,
-              \\"end\\": 685
+              \\"start\\": 773,
+              \\"end\\": 775
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 679,
-            \\"end\\": 685
+            \\"start\\": 769,
+            \\"end\\": 775
           }
         },
         {
@@ -1340,8 +1487,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"date\\",
             \\"loc\\": {
-              \\"start\\": 688,
-              \\"end\\": 692
+              \\"start\\": 778,
+              \\"end\\": 782
             }
           },
           \\"arguments\\": [],
@@ -1351,19 +1498,19 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Date\\",
               \\"loc\\": {
-                \\"start\\": 694,
-                \\"end\\": 698
+                \\"start\\": 784,
+                \\"end\\": 788
               }
             },
             \\"loc\\": {
-              \\"start\\": 694,
-              \\"end\\": 698
+              \\"start\\": 784,
+              \\"end\\": 788
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 688,
-            \\"end\\": 698
+            \\"start\\": 778,
+            \\"end\\": 788
           }
         },
         {
@@ -1372,8 +1519,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"type\\",
             \\"loc\\": {
-              \\"start\\": 701,
-              \\"end\\": 705
+              \\"start\\": 791,
+              \\"end\\": 795
             }
           },
           \\"arguments\\": [],
@@ -1383,25 +1530,25 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"String\\",
               \\"loc\\": {
-                \\"start\\": 707,
-                \\"end\\": 713
+                \\"start\\": 797,
+                \\"end\\": 803
               }
             },
             \\"loc\\": {
-              \\"start\\": 707,
-              \\"end\\": 713
+              \\"start\\": 797,
+              \\"end\\": 803
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 701,
-            \\"end\\": 713
+            \\"start\\": 791,
+            \\"end\\": 803
           }
         }
       ],
       \\"loc\\": {
-        \\"start\\": 657,
-        \\"end\\": 715
+        \\"start\\": 747,
+        \\"end\\": 805
       }
     },
     {
@@ -1410,8 +1557,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Meta\\",
         \\"loc\\": {
-          \\"start\\": 722,
-          \\"end\\": 726
+          \\"start\\": 812,
+          \\"end\\": 816
         }
       },
       \\"interfaces\\": [],
@@ -1423,8 +1570,8 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
             \\"kind\\": \\"Name\\",
             \\"value\\": \\"count\\",
             \\"loc\\": {
-              \\"start\\": 731,
-              \\"end\\": 736
+              \\"start\\": 821,
+              \\"end\\": 826
             }
           },
           \\"arguments\\": [],
@@ -1434,25 +1581,25 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
               \\"kind\\": \\"Name\\",
               \\"value\\": \\"Int\\",
               \\"loc\\": {
-                \\"start\\": 738,
-                \\"end\\": 741
+                \\"start\\": 828,
+                \\"end\\": 831
               }
             },
             \\"loc\\": {
-              \\"start\\": 738,
-              \\"end\\": 741
+              \\"start\\": 828,
+              \\"end\\": 831
             }
           },
           \\"directives\\": [],
           \\"loc\\": {
-            \\"start\\": 731,
-            \\"end\\": 741
+            \\"start\\": 821,
+            \\"end\\": 831
           }
         }
       ],
       \\"loc\\": {
-        \\"start\\": 717,
-        \\"end\\": 743
+        \\"start\\": 807,
+        \\"end\\": 833
       }
     },
     {
@@ -1461,14 +1608,14 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Url\\",
         \\"loc\\": {
-          \\"start\\": 752,
-          \\"end\\": 755
+          \\"start\\": 842,
+          \\"end\\": 845
         }
       },
       \\"directives\\": [],
       \\"loc\\": {
-        \\"start\\": 745,
-        \\"end\\": 755
+        \\"start\\": 835,
+        \\"end\\": 845
       }
     },
     {
@@ -1477,20 +1624,20 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
         \\"kind\\": \\"Name\\",
         \\"value\\": \\"Date\\",
         \\"loc\\": {
-          \\"start\\": 764,
-          \\"end\\": 768
+          \\"start\\": 854,
+          \\"end\\": 858
         }
       },
       \\"directives\\": [],
       \\"loc\\": {
-        \\"start\\": 757,
-        \\"end\\": 768
+        \\"start\\": 847,
+        \\"end\\": 858
       }
     }
   ],
   \\"loc\\": {
     \\"start\\": 0,
-    \\"end\\": 769
+    \\"end\\": 859
   }
 }"
 `;
@@ -1506,17 +1653,23 @@ exports[`TypeDefsEditor (Basics) .print() matches snapshot 1`] = `
 }
 
 type Mutation {
-  createTweet(body: String): Tweet
+  createTweet(data: createTweetInput): Tweet
   deleteTweet(id: ID!): Tweet
   markTweetRead(id: ID!): Boolean
 }
 
 type Tweet {
   id: ID!
-  body: String
+  body: String!
+  tags: [String]!
   date: Date
   Author: User
   Stats: Stat
+}
+
+input createTweetInput {
+  body: String!
+  tags: [String]
 }
 
 type User {

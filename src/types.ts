@@ -11,11 +11,27 @@ import {
   StringValueNode,
   TypeDefinitionNode,
   TypeExtensionNode,
+  VisitorKeyMap,
 } from 'graphql'
 import * as R from 'ramda'
 
 import { typeSystemHashMap } from './hashmap'
-import { tuple } from './util'
+
+export type Lit = string | number | boolean | undefined | null | void | {}
+export const tuple = <T extends Lit[]>(...args: T) => args
+
+// TODO: How to use with/ instead of my hashmap??
+export type Keymap = VisitorKeyMap<ASTKindToNode>
+
+export const actionTypes = tuple(
+  'create',
+  'replace',
+  'upsert',
+  'remove',
+  'delete'
+)
+
+export type ActionTypes = typeof actionTypes[number]
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 

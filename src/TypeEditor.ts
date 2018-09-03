@@ -110,9 +110,8 @@ export class GraphqlTypeEditor<
 
     if (this.hasInProp(prop)(def.name.value)) {
       throw new Error(
-        `Cannot create ${def.name.value} in ${prop} on type ${this.name()}
-        Value with the same name already exist.
-        `
+        `Cannot create '${def.name.value}' in ${prop} on type '${this.name()}'` +
+          `Value with the same name already exist.`
       )
     }
 
@@ -121,20 +120,18 @@ export class GraphqlTypeEditor<
     return this
   }
 
-  public updateInProp: CreateInProp<T> = prop => def => {
+  public replaceInProp: CreateInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot update ${def.name.value} in ${prop} on type ${this.name()}
-        ${this.kind()} type has no ${prop}.
-        `
+        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}'` +
+          `'${this.kind()}' type has no ${prop}.`
       )
     }
 
     if (!this.hasInProp(prop)(def.name.value)) {
       throw new Error(
-        `Cannot update ${def.name.value} in ${prop} on type ${this.name()}
-        Value with this name does not exist.
-        `
+        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}'` +
+          `Value with this name does not exist.`
       )
     }
 
@@ -146,9 +143,8 @@ export class GraphqlTypeEditor<
   public upsertInProp: UpsertInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot upsert ${def.name.value} in ${prop} on type ${this.name()}
-        ${this.kind()} type has no ${prop}.
-        `
+        `Cannot upsert '${def.name.value}' in ${prop} on type '${this.name()}'` +
+          `'${this.kind()}' type has no ${prop}.`
       )
     }
 
@@ -160,17 +156,28 @@ export class GraphqlTypeEditor<
   public deleteInProp: DeleteInType<T> = prop => name => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot delete ${name} in ${prop} on type ${this.name()}
-        ${this.kind()} type has no ${prop}.
-        `
+        `Cannot delete '${name}' in ${prop} on type '${this.name()}'` +
+          `'${this.kind()}' type has no ${prop}.`
+      )
+    }
+
+    this.hashedNode[prop] = R.dissoc(name, this.hashedNode[prop])
+
+    return this
+  }
+
+  public removeInProp: DeleteInType<T> = prop => name => {
+    if (!this.hasProp(prop)) {
+      throw new Error(
+        `Cannot remove '${name}' in ${prop} on type '${this.name()}'` +
+          `'${this.kind()}' type has no ${prop}.`
       )
     }
 
     if (!this.hasInProp(prop)(name)) {
       throw new Error(
-        `Cannot delete ${name} in ${prop} on type ${this.name()}
-        Value does not exist.
-        `
+        `Cannot remove '${name}' in ${prop} on type '${this.name()}'` +
+          `Value does not exist.`
       )
     }
 
@@ -195,10 +202,10 @@ export class GraphqlTypeEditor<
   public createInterface = this.createInProp('interfaces')
   public createValue = this.createInProp('values')
 
-  public updateDirective = this.updateInProp('directives')
-  public updateField = this.updateInProp('fields')
-  public updateInterface = this.updateInProp('interfaces')
-  public updateValue = this.updateInProp('values')
+  public replaceDirective = this.replaceInProp('directives')
+  public replaceField = this.replaceInProp('fields')
+  public replaceInterface = this.replaceInProp('interfaces')
+  public replaceValue = this.replaceInProp('values')
 
   public upsertDirective = this.upsertInProp('directives')
   public upsertField = this.upsertInProp('fields')
@@ -209,6 +216,11 @@ export class GraphqlTypeEditor<
   public deleteField = this.deleteInProp('fields')
   public deleteInterface = this.deleteInProp('interfaces')
   public deleteValue = this.deleteInProp('values')
+
+  public removeDirective = this.removeInProp('directives')
+  public removeField = this.removeInProp('fields')
+  public removeInterface = this.removeInProp('interfaces')
+  public removeValue = this.removeInProp('values')
 
   public node = () => {
     const astNode = Object.keys(this.hashedNode).reduce(

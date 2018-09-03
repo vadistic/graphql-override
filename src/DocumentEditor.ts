@@ -33,7 +33,7 @@ interface GetInType {
   (type: 'definitions' | 'extensions' | 'directives'): (name: string) => GraphqlTypeEditor
 }
 
-interface CreateInType {
+interface ActionInType {
   (type: 'definitions'): (node: TypeDefinitionNode) => GraphqlDocumentEditor
   (type: 'extensions'): (node: TypeExtensionNode) => GraphqlDocumentEditor
   (type: 'directives'): (node: DirectiveDefinitionNode) => GraphqlDocumentEditor
@@ -42,11 +42,8 @@ interface CreateInType {
   ) => GraphqlDocumentEditor
 }
 
-type UpsertInType = CreateInType
-
-type UpdateInType = CreateInType
-
 type DeleteInType = (type: TypeDefsVariants) => (name: string) => GraphqlDocumentEditor
+type RemoveInType = DeleteInType
 
 export class GraphqlDocumentEditor {
   private directives: Hash<TypeEditorDirective> = {}
@@ -83,49 +80,53 @@ export class GraphqlDocumentEditor {
 
   public getInType: GetInType = type => name => this[type][name]
 
-  public createInType: CreateInType = type => node => {
+  public createInType: ActionInType = type => node => {
     if (this.hasInType(type)(node.name.value)) {
-      throw new Error(`Cannot create type '${node.name.value}' in ${type}
-      Definition with the same name already exists.`)
+      throw new Error(
+        `Cannot create type '${node.name.value}' in ${type}` +
+          `Definition with the same name already exists.`
+      )
     }
 
-    this[type][node.name.value] = new GraphqlTypeEditor(node)
+    this.upsertInType(type)(node)
 
     return this
   }
 
-  public upsertInType: UpsertInType = type => node => {
-    this[type][node.name.value] = new GraphqlTypeEditor(node)
-
-    return this
-  }
-
-  public updateInType: UpdateInType = type => node => {
+  public replaceInType: ActionInType = type => node => {
     if (!this.hasInType(type)(node.name.value)) {
-      throw new Error(`Cannot update type '${node.name.value}' in ${type}
-      Definition with this name does not exist.`)
+      throw new Error(
+        `Cannot replace type '${node.name.value}' in ${type}` +
+          `Definition with this name does not exist.`
+      )
     }
 
-    const prev = this[type][node.name.value]
-    const update = new GraphqlTypeEditor(node)
-    const map = typeSystemHashMap[update.kind()]
+    this.upsertInType(type)(node)
 
-    this[type][node.name.value] = Object.assign(
-      prev,
-      R.pickBy(prop => R.prop(prop, map), update),
-      node.description ? { description: node.description } : {}
-    )
+    return this
+  }
+
+  public upsertInType: ActionInType = type => node => {
+    this[type][node.name.value] = new GraphqlTypeEditor(node)
 
     return this
   }
 
   public deleteInType: DeleteInType = type => name => {
+    this[type] = R.dissoc(name, this[type])
+
+    return this
+  }
+
+  public removeInType: RemoveInType = type => name => {
     if (!this.hasInType(type)(name)) {
-      throw new Error(`Cannot delete type '${name}' in ${type}
-      Definition with this name does not exist.`)
+      throw new Error(
+        `Cannot delete type '${name}' in ${type}` +
+          `Definition with this name does not exist.`
+      )
     }
 
-    this[type] = R.dissoc(name, this[type])
+    this.deleteInType(type)(name)
 
     return this
   }

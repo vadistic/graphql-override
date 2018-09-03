@@ -26,7 +26,7 @@ type Stat {
   views: Int
   likes: Int
   loves: Int @create
-  retweets: Meta @update
+  retweets: Meta @replace
   responses: Int
 }
 

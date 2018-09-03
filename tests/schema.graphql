@@ -1,13 +1,15 @@
 type Tweet {
   id: ID!
-  # The tweet text. No more than 140 characters!
-  body: String
-  # When the tweet was published
+  body: String!
+  tags: [String]!
   date: Date
-  # Who published the tweet
   Author: User
-  # Views, retweets, likes, etc
   Stats: Stat
+}
+
+input createTweetInput {
+  body: String!
+  tags: [String]
 }
 
 type User {
@@ -50,7 +52,7 @@ type Query {
 }
 
 type Mutation {
-  createTweet(body: String): Tweet
+  createTweet(data: createTweetInput): Tweet
   deleteTweet(id: ID!): Tweet
   markTweetRead(id: ID!): Boolean
 }

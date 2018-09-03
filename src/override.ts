@@ -1,23 +1,24 @@
-import { readFileSync, statSync } from 'fs'
 import {
-  ASTKindToNode,
   DefinitionNode,
   DirectiveNode,
   DocumentNode,
-  Kind,
   KindEnum,
   NameNode,
-  parse,
-  TokenKind,
   visit,
-  Visitor,
-  VisitorKeyMap,
 } from 'graphql'
-import * as p from 'path'
 import * as R from 'ramda'
+
 import { GraphqlDocumentEditor } from './DocumentEditor'
-import { isFieldDefNode, isTypeDefNode, PropDefNode, TypeDefNode } from './types'
-import { tuple, validateSchemaInput } from './util'
+import {
+  ActionTypes,
+  actionTypes,
+  isFieldDefNode,
+  isTypeDefNode,
+  PropDefNode,
+  SupportedDefinitionNode,
+  TypeDefNode,
+} from './types'
+import { isSupported, validateSchemaInput } from './util'
 
 interface GraphQLOverrideOptions {
   silent: true
@@ -29,37 +30,34 @@ type GraphQLOverride = (
   options?: GraphQLOverrideOptions
 ) => DocumentNode
 
-// TODO: How to use with/ instead of my hashmap??
-type Keymap = VisitorKeyMap<ASTKindToNode>
-
-export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => {
+export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
   const _schema = validateSchemaInput(schema, 'schema')
   const _overrides = validateSchemaInput(overrides, 'overrides')
 
-  const overrideActionTypes = tuple('create', 'update', 'upsert', 'delete')
-
-  interface ActionInfo {
+  interface ActionTypeInfo {
     name: NameNode
     kind: KindEnum
   }
 
-  type Actions<T> = { [P in typeof overrideActionTypes[number]]: Array<[ActionInfo, T]> }
+  type Actions<T> = { [P in ActionTypes]: Array<[ActionTypeInfo, T]> }
 
   const fieldActions: Actions<PropDefNode> = {
     create: [],
-    update: [],
+    replace: [],
     upsert: [],
+    remove: [],
     delete: [],
   }
   const typeActions: Actions<TypeDefNode> = {
     create: [],
-    update: [],
+    replace: [],
     upsert: [],
+    remove: [],
     delete: [],
   }
 
-  const isOverrideDirective = (node: DirectiveNode) =>
-    R.contains(node.name.value, overrideActionTypes)
+  const isActionDirective = (node: DirectiveNode): node is DirectiveNode =>
+    R.contains(node.name.value, actionTypes)
 
   const withoutDirective = (
     index: number | string,
@@ -67,13 +65,24 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
   ): PropDefNode | TypeDefNode =>
     R.assoc('directives', R.remove(Number(index), 1, node.directives), node)
 
-  // visit overrides
   visit(_overrides, {
     Directive: (node, key, parent, path, ancestors) => {
-      if (isOverrideDirective(node)) {
+      if (isActionDirective(node)) {
         const realParent = ancestors[ancestors.length - 1]
         if (isFieldDefNode(realParent)) {
-          const realGrandParent = ancestors[ancestors.length - 3]
+          const realGrandParent = ancestors[
+            ancestors.length - 3
+          ] as SupportedDefinitionNode
+          if (
+            // any directive of grandparent (TypeDefinition) is also action directive? => Err
+            R.has('directives', realGrandParent) &&
+            R.any(isActionDirective)(R.propOr([], 'directives', realGrandParent))
+          ) {
+            throw new Error(
+              `Error while parsing type ${realGrandParent.name.value} overrides.` +
+                `Combining type & field override directives results in undetermined behavior and is not supported (yet)`
+            )
+          }
           fieldActions[node.name.value].push([
             R.pick(['name', 'kind'], realGrandParent),
             withoutDirective(R.last(path), realParent),
@@ -106,16 +115,20 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
     SchemaEditor.createInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.update.forEach(([info, def]) => {
-    SchemaEditor.updateInType(typeEnum(info.kind))(def)
+  typeActions.replace.forEach(([info, def]) => {
+    SchemaEditor.replaceInType(typeEnum(info.kind))(def)
   })
 
   typeActions.upsert.forEach(([info, def]) => {
     SchemaEditor.upsertInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.delete.forEach(([info, def]) => {
+  typeActions.delete.forEach(([info]) => {
     SchemaEditor.deleteInType(typeEnum(info.kind))(info.name.value)
+  })
+
+  typeActions.remove.forEach(([info]) => {
+    SchemaEditor.removeInType(typeEnum(info.kind))(info.name.value)
   })
 
   const fieldEnum = (kind: string) => {
@@ -138,8 +151,8 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
     )(field)
   })
 
-  fieldActions.update.forEach(([info, field]) => {
-    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).updateInProp(
+  fieldActions.replace.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).replaceInProp(
       fieldEnum(field.kind)
     )(field)
   })
@@ -152,6 +165,12 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides, options) => 
 
   fieldActions.delete.forEach(([info, field]) => {
     SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).deleteInProp(
+      fieldEnum(field.kind)
+    )(field.name.value)
+  })
+
+  fieldActions.remove.forEach(([info, field]) => {
+    SchemaEditor.getInType(typeEnum(info.kind))(info.name.value).removeInProp(
       fieldEnum(field.kind)
     )(field.name.value)
   })

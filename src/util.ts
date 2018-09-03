@@ -6,9 +6,6 @@ import { typeSystemHashMap } from './hashmap'
 import { GraphqlTypeEditor } from './TypeEditor'
 import { Hash, SupportedDefinitionNode } from './types'
 
-export type Lit = string | number | boolean | undefined | null | void | {}
-export const tuple = <T extends Lit[]>(...args: T) => args
-
 export const hashArrByName = <T extends SupportedDefinitionNode>(
   defs: ReadonlyArray<T>
 ) =>

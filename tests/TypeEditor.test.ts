@@ -345,7 +345,7 @@ describe('DefinitionEditor (CRUD)', () => {
     }).toThrowError('Cannot create')
   })
 
-  it('.upserInProp() succeeds, fails & throw error', () => {
+  it('.upsertInProp() succeeds, fails & throw error', () => {
     const source = pretty(`
     type Notification {
       id: ID
@@ -388,6 +388,47 @@ describe('DefinitionEditor (CRUD)', () => {
     }).toThrowError('Cannot upsert')
   })
 
+  it('.replaceInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const editor = new GraphqlTypeEditor(getDef(source))
+
+    const validField = R.assoc(
+      'description',
+      'Some cool description',
+      (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+    )
+
+    const invalidField = R.assocPath(
+      ['name', 'value'],
+      'variant',
+      (getDef(source) as ObjectTypeDefinitionNode).fields[0]
+    )
+
+    // replacing field
+    expect(
+      editor
+        .replaceInProp('fields')(validField)
+        .getField('id').description
+    ).toMatch('Some cool description')
+
+    // trying to replace field on wrong prop
+    expect(() => {
+      editor.replaceInProp('values')(validField as any)
+    }).toThrowError('Cannot replace')
+
+    // trying to replace field that does not exist
+    expect(() => {
+      editor.replaceInProp('fields')(invalidField as any)
+    }).toThrowError('does not exist')
+  })
+
   it('.deleteInProp() succeeds, fails & throw error', () => {
     const source = pretty(`
     type Notification {
@@ -412,12 +453,38 @@ describe('DefinitionEditor (CRUD)', () => {
         .deleteInProp('values')('date')
         .hasField('date')
     }).toThrowError('Cannot delete')
+  })
 
-    // trying to delete non-existent field
+  it('.removeInProp() succeeds, fails & throw error', () => {
+    const source = pretty(`
+    type Notification {
+      id: ID
+      date: Date
+      type: String
+    }
+    `)
+
+    const editor = new GraphqlTypeEditor(getDef(source))
+
+    // removes field
+    expect(
+      editor
+        .removeInProp('fields')('date')
+        .hasField('date')
+    ).toBeFalsy()
+
+    // trying to remove field on invalid prop
     expect(() => {
       editor
-        .deleteInProp('fields')('user')
+        .removeInProp('values')('date')
         .hasField('date')
-    }).toThrowError('Cannot delete')
+    }).toThrowError('Cannot remove')
+
+    // trying to remove non-existent field
+    expect(() => {
+      editor
+        .removeInProp('fields')('user')
+        .hasField('date')
+    }).toThrowError('Cannot remove')
   })
 })

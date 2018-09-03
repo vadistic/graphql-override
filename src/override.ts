@@ -18,13 +18,12 @@ import {
   SupportedDefinitionNode,
   TypeDefNode,
 } from './types'
-import { isSupported, validateSchemaInput } from './util'
+import { validateSchemaInput } from './util'
 
-interface GraphQLOverrideOptions {
-  silent: true
-}
+// TODO: add options
+export interface GraphQLOverrideOptions {}
 
-type GraphQLOverride = (
+export type GraphQLOverride = (
   schema: string | DocumentNode,
   overrides: string | DocumentNode,
   options?: GraphQLOverrideOptions
@@ -59,6 +58,9 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
   const isActionDirective = (node: DirectiveNode): node is DirectiveNode =>
     R.contains(node.name.value, actionTypes)
 
+  const hasActionDirective = (node: DefinitionNode): node is TypeDefNode =>
+    R.any(isActionDirective)(R.propOr([], 'directives', node))
+
   const withoutDirective = (
     index: number | string,
     node: PropDefNode | TypeDefNode
@@ -73,14 +75,16 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
           const realGrandParent = ancestors[
             ancestors.length - 3
           ] as SupportedDefinitionNode
-          if (
-            // any directive of grandparent (TypeDefinition) is also action directive? => Err
-            R.has('directives', realGrandParent) &&
-            R.any(isActionDirective)(R.propOr([], 'directives', realGrandParent))
-          ) {
+          if (!isTypeDefNode(realGrandParent)) {
+            throw new Error(
+              `Cannot parse directive '${node.name.value}' on ${realParent.name.value}.` +
+                `Parent node is not Type System Definition/Extension Node!`
+            )
+          }
+          if (hasActionDirective(realGrandParent)) {
             throw new Error(
               `Error while parsing type ${realGrandParent.name.value} overrides.` +
-                `Combining type & field override directives results in undetermined behavior and is not supported (yet)`
+                `Combining type & field override directives results in undetermined behavior and is not supported (yet)!`
             )
           }
           fieldActions[node.name.value].push([
@@ -107,7 +111,7 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
     if (R.test(/Extension/, kind)) {
       return 'extensions'
     } else {
-      throw new Error(`Invalid action, cannot execute action on type ${kind}`)
+      throw new Error(`Override action on invalid type: '${kind}'.`)
     }
   }
 
@@ -123,12 +127,12 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
     SchemaEditor.upsertInType(typeEnum(info.kind))(def)
   })
 
-  typeActions.delete.forEach(([info]) => {
-    SchemaEditor.deleteInType(typeEnum(info.kind))(info.name.value)
+  typeActions.delete.forEach(([info, def]) => {
+    SchemaEditor.deleteInType(typeEnum(info.kind))(def.name.value)
   })
 
-  typeActions.remove.forEach(([info]) => {
-    SchemaEditor.removeInType(typeEnum(info.kind))(info.name.value)
+  typeActions.remove.forEach(([info, def]) => {
+    SchemaEditor.removeInType(typeEnum(info.kind))(def.name.value)
   })
 
   const fieldEnum = (kind: string) => {
@@ -141,7 +145,7 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
     if (R.test(/EnumValueDefinition/, kind)) {
       return 'values'
     } else {
-      throw new Error(`Invalid action, cannot execute action on type ${kind}`)
+      throw new Error(`Override action on invalid type: '${kind}'.`)
     }
   }
 

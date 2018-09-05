@@ -1,7 +1,7 @@
 import { GraphqlDocumentEditor } from '../src'
 import { typeSystemHashMap } from '../src/hashmap'
 import { graphQLOverride } from '../src/override'
-import { overrides, schema } from './mock'
+import { overrides, schema } from './fixtures'
 
 describe('override (Basics)', () => {
   it('does not crash', () => {

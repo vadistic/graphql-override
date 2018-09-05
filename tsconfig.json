@@ -3,15 +3,16 @@
     "target": "es6",
     "moduleResolution": "node",
     "module": "commonjs",
-    "lib": ["es2017", "esnext"],
+    "lib": ["dom", "esnext"],
     "alwaysStrict": true,
     "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "noImplicitThis": true,
     "noImplicitReturns": true
   },
-  "include": ["src/**/*.ts", "jest.config.js", "tests/override.test.ts", "tests/TypeEditor.test.ts", "tests/DocumentEditor.test.ts"],
-  "exclude": ["node_modules", "dist", "coverage"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "coverage", "examples", " tests"]
 }

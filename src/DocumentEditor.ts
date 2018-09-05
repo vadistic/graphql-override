@@ -16,7 +16,7 @@ import {
 } from './hashmap'
 import { GraphqlTypeEditor } from './TypeEditor'
 import { Hash, SupportedDefinitionNode } from './types'
-import { isSupported, unhashTypeDefinitions, validateSchemaInput } from './util'
+import { getSchemaInput, isSupported, unhashTypeDefinitions } from './util'
 
 export type TypeDefsVariants = 'directives' | 'definitions' | 'extensions'
 
@@ -57,7 +57,7 @@ export class GraphqlDocumentEditor {
   private schema: DocumentNode
 
   constructor(schema: string | DocumentNode, options?: GraphqlDocumentEditorOptions) {
-    this.schema = validateSchemaInput(schema, options)
+    this.schema = getSchemaInput(schema, options)
 
     this.schema.definitions.forEach(node => {
       if (!isSupported(node)) {

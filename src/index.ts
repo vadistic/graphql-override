@@ -1,3 +1,5 @@
-export * from './TypeEditor'
-export * from './DocumentEditor'
-export * from './override'
+export { GraphqlTypeEditor } from './TypeEditor'
+export { GraphqlDocumentEditor, GraphqlDocumentEditorOptions } from './DocumentEditor'
+export { graphQLOverride, GraphQLOverride, GraphQLOverrideOptions } from './override'
+export { isSupported, getSchemaInput, GetSchemaInputOptions } from './util'
+export { SupportedDefinitionNode, HashedDefinitionNode } from './types'

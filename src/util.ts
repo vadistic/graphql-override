@@ -32,17 +32,17 @@ export const isSupported = (node: DefinitionNode): node is SupportedDefinitionNo
 
 export const hasName = (name: string) => R.pathEq(['name', 'value'], name)
 
-export interface ValidateOptions {
+export interface GetSchemaInputOptions {
   inputName?: string
   useImport?: boolean
 }
 
-export type validateSchemaInput = (
+export type getSchemaInput = (
   input: string | DocumentNode,
-  options?: ValidateOptions
+  options?: GetSchemaInputOptions
 ) => DocumentNode
 
-export const validateSchemaInput: validateSchemaInput = (
+export const getSchemaInput: getSchemaInput = (
   input,
   { inputName, useImport } = {}
 ) => {

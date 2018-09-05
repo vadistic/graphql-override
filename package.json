@@ -2,7 +2,7 @@
   "name": "graphql-override",
   "version": "0.1.0",
   "author": "Jakub Wadas <vadistic@gmail.com>",
-  "description": "Edit & override type definitions in GraphQL SDL",
+  "description": "Utility tool for convinient modification of GraphQL Type Definitions. ✂️",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -20,7 +20,8 @@
     "test:watch": "yarn test -- --watchAll"
   },
   "dependencies": {
-    "graphql-config": "^2.1.0",
+    "graphql-config": ">2.0.0",
+    "graphql-import": ">0.5.0",
     "meow": "^5.0.0",
     "ramda": "^0.25.0"
   },
@@ -32,7 +33,6 @@
     "@types/prettier": "^1.13.2",
     "@types/ramda": "^0.25.36",
     "cpx": "^1.5.0",
-    "graphql": "^0.13.2",
     "jest": "^23.5.0",
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
@@ -43,6 +43,6 @@
     "typescript": "^3.0.3"
   },
   "peerDependencies": {
-    "graphql-import": "^0.6.0"
+    "graphql": "^14.0.0"
   }
 }

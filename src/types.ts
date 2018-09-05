@@ -17,11 +17,9 @@ import * as R from 'ramda'
 
 import { typeSystemHashMap } from './hashmap'
 
-export type Lit = string | number | boolean | undefined | null | void | {}
-export const tuple = <T extends Lit[]>(...args: T) => args
+export type Literal = string | number | boolean | undefined | null | void | {}
+export const tuple = <T extends Literal[]>(...args: T) => args
 
-// TODO: How to use with/ instead of my hashmap??
-export type Keymap = VisitorKeyMap<ASTKindToNode>
 
 export const actionTypes = tuple(
   'create',
@@ -65,7 +63,7 @@ export type TypeDefNode = ASTKindToNode[typeof typeDefNodes[number]]
 
 export type PropNode = PropDefNode | DirectiveNode | NamedTypeNode
 
-export type DirectiveDefNode = ASTKindToNode[typeof directiveDefNodes[number]]
+export type DirectiveDefinitionNode = ASTKindToNode[typeof directiveDefNodes[number]]
 
 export const isFieldDefNode = (node: object): node is PropDefNode =>
   R.contains(R.propOr('', 'kind', node), propDefNodes)

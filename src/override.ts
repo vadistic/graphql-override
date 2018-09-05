@@ -18,7 +18,7 @@ import {
   SupportedDefinitionNode,
   TypeDefNode,
 } from './types'
-import { validateSchemaInput } from './util'
+import { getSchemaInput } from './util'
 
 // TODO: add options
 export interface GraphQLOverrideOptions {
@@ -40,8 +40,8 @@ export const graphQLOverride: GraphQLOverride = (
   overrides,
   { useImport } = defaultOptions
 ) => {
-  const _schema = validateSchemaInput(schema, { inputName: 'schema', useImport })
-  const _overrides = validateSchemaInput(overrides, { inputName: 'overrides', useImport })
+  const _schema = getSchemaInput(schema, { inputName: 'schema', useImport })
+  const _overrides = getSchemaInput(overrides, { inputName: 'overrides', useImport })
 
   interface ActionTypeInfo {
     name: NameNode

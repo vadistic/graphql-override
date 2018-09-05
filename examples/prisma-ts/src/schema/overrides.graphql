@@ -1,20 +1,29 @@
-# Importing override directives for convinience
-# They could be also simply delared:
-# directive @create on FIELD_DEFINITION
+# import override directives
+# import * from "../../node_modules/graphql-override/dist/directives.graphql"
 
-# import * from "../../node_modules/graphql-ast-editor/dist/directives.graphql"
-
-# Importing all types from prisma to avoid any import or parse errors
-# All types without override directives will be ignored
-
+# import all generated types (to make schema valid)
 # import * from "../generated/prisma.graphql"
 
-# Importing overrides froma another files
-# (by default done using graphql-import, can be switched off in options)
-# import * from "moreOverrides.graphql"
+# import schema that will be overriden
+# also to make schema valid, but
+# !!! this is a hack for graphql import !!!
+# otherwise some types would be optimised as not necessary and not end up imported
+# import * from "schema.graphql"
 
-type User @exclude {
-  password: String
+# import some overrides form other files
+# import * from "postOverrides.graphql"
+
+type User {
+  posts(
+    where: PostWhereInput
+    orderBy: PostOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Post!]
+  password: String @remove
 }
 
 input UserWhereInput @exclude {

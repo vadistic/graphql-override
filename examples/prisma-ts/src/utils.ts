@@ -6,7 +6,7 @@ export interface Context {
   request: any
 }
 
-export function getUserId(ctx: Context) {
+export const getUserId = (ctx: Context) => {
   const Authorization = ctx.request.get('Authorization')
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '')
@@ -14,11 +14,5 @@ export function getUserId(ctx: Context) {
     return userId
   }
 
-  throw new AuthError()
-}
-
-export class AuthError extends Error {
-  constructor() {
-    super('Not authorized')
-  }
+  throw new Error(`Not authorized`)
 }

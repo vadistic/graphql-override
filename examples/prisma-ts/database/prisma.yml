@@ -16,7 +16,7 @@ seed:
 hooks:
   post-deploy:
     - graphql get-schema --project database
-    # post deploy hook to update typings
+    # post deploy hook to generate schema
     - graphql-override
     - graphql codegen
 

@@ -1,10 +1,10 @@
-# Type and field/value directives
+# Directives for TYPE_DEFINITION | FIELD DEFINITION
 directive @create on FIELD_DEFINITION
 directive @replace on FIELD_DEFINITION
 directive @upsert on FIELD_DEFINITION
 directive @delete on FIELD_DEFINITION
 directive @remove on FIELD_DEFINITION
 
-# Only type dirctives
+# Directives only for TYPE_DEFINITION
 directive @extend on FIELD_DEFINITION
 directive @exclude on FIELD_DEFINITION

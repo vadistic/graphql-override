@@ -23,14 +23,12 @@ type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
 }
 
-type Post implements Node {
+type Post {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  isPublished: Boolean!
   title: String!
   text: String!
-  author(where: UserWhereInput): User!
 }
 
 input PostWhereInput {
@@ -273,12 +271,14 @@ input PostCreateInput {
   isPublished: Boolean
   title: String!
   text: String!
+  author: UserCreateOneWithoutPostsInput!
 }
 
 input PostUpdateInput {
   isPublished: Boolean
   title: String
   text: String
+  author: UserUpdateOneWithoutPostsInput
 }
 
 input UserUpdateInput {

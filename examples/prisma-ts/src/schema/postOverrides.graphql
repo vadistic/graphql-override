@@ -1,0 +1,31 @@
+type Post @replace {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  text: String!
+}
+
+input PostWhereInput @replace {
+  AND: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  NOT: [PostWhereInput!]
+  id: ID
+  id_in: [ID!]
+  updatedAt_gte: DateTime
+  isPublished: Boolean
+  title_contains: String
+  text_contains: String
+  author: UserWhereInput
+}
+
+input PostCreateInput {
+  isPublished: Boolean
+  title: String!
+  text: String!
+  author: UserCreateOneWithoutPostsInput! @remove
+}
+
+input PostUpdateInput @exclude {
+  author: Int
+}

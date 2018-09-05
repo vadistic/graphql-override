@@ -1,4 +1,4 @@
-# import * from '../src/directives.graphql'
+# import * from '../../src/directives.graphql'
 
 type Tweet {
   id: ID!

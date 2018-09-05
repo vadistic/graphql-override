@@ -1,5 +1,10 @@
-directive @create on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
-directive @replace on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
-directive @upsert on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
-directive @delete on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
-directive @remove on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+# Type and field/value directives
+directive @create on FIELD_DEFINITION
+directive @replace on FIELD_DEFINITION
+directive @upsert on FIELD_DEFINITION
+directive @delete on FIELD_DEFINITION
+directive @remove on FIELD_DEFINITION
+
+# Only type dirctives
+directive @extend on FIELD_DEFINITION
+directive @exclude on FIELD_DEFINITION

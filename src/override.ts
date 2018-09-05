@@ -21,7 +21,13 @@ import {
 import { validateSchemaInput } from './util'
 
 // TODO: add options
-export interface GraphQLOverrideOptions {}
+export interface GraphQLOverrideOptions {
+  useImport?: boolean
+}
+
+const defaultOptions = {
+  useImport: true,
+}
 
 export type GraphQLOverride = (
   schema: string | DocumentNode,
@@ -29,9 +35,13 @@ export type GraphQLOverride = (
   options?: GraphQLOverrideOptions
 ) => DocumentNode
 
-export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
-  const _schema = validateSchemaInput(schema, 'schema')
-  const _overrides = validateSchemaInput(overrides, 'overrides')
+export const graphQLOverride: GraphQLOverride = (
+  schema,
+  overrides,
+  { useImport } = defaultOptions
+) => {
+  const _schema = validateSchemaInput(schema, { inputName: 'schema', useImport })
+  const _overrides = validateSchemaInput(overrides, { inputName: 'overrides', useImport })
 
   interface ActionTypeInfo {
     name: NameNode
@@ -46,6 +56,8 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
     upsert: [],
     remove: [],
     delete: [],
+    extend: [],
+    exclude: [],
   }
   const typeActions: Actions<TypeDefNode> = {
     create: [],
@@ -53,6 +65,8 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
     upsert: [],
     remove: [],
     delete: [],
+    extend: [],
+    exclude: [],
   }
 
   const isActionDirective = (node: DirectiveNode): node is DirectiveNode =>
@@ -77,13 +91,14 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
           ] as SupportedDefinitionNode
           if (!isTypeDefNode(realGrandParent)) {
             throw new Error(
-              `Cannot parse directive '${node.name.value}' on ${realParent.name.value}.` +
-                `Parent node is not Type System Definition/Extension Node!`
+              `Cannot parse directive '${node.name.value}' on ${
+                realParent.name.value
+              }.\n` + `Parent node is not Type System Definition/Extension Node!`
             )
           }
           if (hasActionDirective(realGrandParent)) {
             throw new Error(
-              `Error while parsing type ${realGrandParent.name.value} overrides.` +
+              `Cannot parse type '${realGrandParent.name.value}' in overrides.\n` +
                 `Combining type & field override directives results in undetermined behavior and is not supported (yet)!`
             )
           }
@@ -133,6 +148,14 @@ export const graphQLOverride: GraphQLOverride = (schema, overrides) => {
 
   typeActions.remove.forEach(([info, def]) => {
     SchemaEditor.removeInType(typeEnum(info.kind))(def.name.value)
+  })
+
+  typeActions.extend.forEach(([info, def]) => {
+    SchemaEditor.extendInType(typeEnum(info.kind))(def)
+  })
+
+  typeActions.exclude.forEach(([info, def]) => {
+    SchemaEditor.excludeInType(typeEnum(info.kind))(def)
   })
 
   const fieldEnum = (kind: string) => {

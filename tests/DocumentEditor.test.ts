@@ -2,7 +2,7 @@ import { GraphqlDocumentEditor } from '../src'
 
 import { parse, print } from 'graphql'
 
-import { schema } from './mock'
+import { schema } from './fixtures'
 import { serialize } from './util'
 
 describe('TypeDefsEditor (Basics)', () => {

@@ -2,6 +2,7 @@ import { readFileSync, statSync } from 'fs'
 import { DefinitionNode, DocumentNode, parse } from 'graphql'
 import * as R from 'ramda'
 
+import { importSchema } from 'graphql-import'
 import { typeSystemHashMap } from './hashmap'
 import { GraphqlTypeEditor } from './TypeEditor'
 import { Hash, SupportedDefinitionNode } from './types'
@@ -31,18 +32,38 @@ export const isSupported = (node: DefinitionNode): node is SupportedDefinitionNo
 
 export const hasName = (name: string) => R.pathEq(['name', 'value'], name)
 
-export const validateSchemaInput = (input: string | DocumentNode, inputName?: string) => {
+export interface ValidateOptions {
+  inputName?: string
+  useImport?: boolean
+}
+
+export type validateSchemaInput = (
+  input: string | DocumentNode,
+  options?: ValidateOptions
+) => DocumentNode
+
+export const validateSchemaInput: validateSchemaInput = (
+  input,
+  { inputName, useImport } = {}
+) => {
   if (typeof input === 'object' && input.kind === 'Document') {
     return input
   } else if (typeof input === 'string') {
+    // catch block to contain statSync error
+    let isFile: boolean = false
     try {
       if (statSync(input).isFile()) {
-        return parse(readFileSync(input, 'utf-8'))
+        isFile = true
       }
     } catch (err) {
-      // noop - it just mean input is not a filepath
+      // noop - it simply means that input is not a (valid) filepath
     }
-    return parse(input)
+
+    if (isFile) {
+      return useImport ? parse(importSchema(input)) : parse(readFileSync(input, 'utf-8'))
+    } else {
+      return parse(input)
+    }
   } else {
     throw new Error(`Provided invalid input argument ${inputName && `to '${inputName}'`}`)
   }

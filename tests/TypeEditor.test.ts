@@ -11,7 +11,7 @@ import * as R from 'ramda'
 
 import { GraphqlTypeEditor } from '../src'
 import { SupportedDefinitionNode } from '../src/types'
-import { schema as fullSchema } from './mock'
+import { schema as fullSchema } from './fixtures'
 import { getDef, pretty, serialize } from './util'
 
 describe('DefinitionEditor (Basics)', () => {

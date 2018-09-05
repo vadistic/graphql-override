@@ -28,7 +28,9 @@ export const actionTypes = tuple(
   'replace',
   'upsert',
   'remove',
-  'delete'
+  'delete',
+  'extend',
+  'exclude'
 )
 
 export type ActionTypes = typeof actionTypes[number]

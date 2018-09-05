@@ -89,7 +89,7 @@ export class GraphqlTypeEditor<
   public hasInProp: ExistInProp = prop => name => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot check if prop '${prop}' has '${name}',  because ${prop} does not exist on type '${this.kind()}'`
+        `Cannot check if prop '${prop}' has '${name}', because ${prop} does not exist on type '${this.kind()}'`
       )
     }
 
@@ -102,16 +102,15 @@ export class GraphqlTypeEditor<
   public createInProp: CreateInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot create ${def.name.value} in ${prop} on type ${this.name()}
-        ${this.kind()} type has no ${prop}.
-        `
+        `Cannot create ${def.name.value} in ${prop} on type ${this.name()} ` +
+          `${this.kind()} type has no ${prop}.`
       )
     }
 
     if (this.hasInProp(prop)(def.name.value)) {
       throw new Error(
-        `Cannot create '${def.name.value}' in ${prop} on type '${this.name()}'` +
-          `Value with the same name already exist.`
+        `Cannot create '${def.name.value}' in ${prop} on type '${this.name()}' ` +
+          `Field/value with the same name already exist.`
       )
     }
 
@@ -123,15 +122,15 @@ export class GraphqlTypeEditor<
   public replaceInProp: CreateInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}'` +
+        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}' ` +
           `'${this.kind()}' type has no ${prop}.`
       )
     }
 
     if (!this.hasInProp(prop)(def.name.value)) {
       throw new Error(
-        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}'` +
-          `Value with this name does not exist.`
+        `Cannot replace '${def.name.value}' in ${prop} on type '${this.name()}' ` +
+          `Field/value with this name does not exist.`
       )
     }
 
@@ -143,7 +142,7 @@ export class GraphqlTypeEditor<
   public upsertInProp: UpsertInProp<T> = prop => def => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot upsert '${def.name.value}' in ${prop} on type '${this.name()}'` +
+        `Cannot upsert '${def.name.value}' in ${prop} on type '${this.name()}' ` +
           `'${this.kind()}' type has no ${prop}.`
       )
     }
@@ -156,7 +155,7 @@ export class GraphqlTypeEditor<
   public deleteInProp: DeleteInType<T> = prop => name => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot delete '${name}' in ${prop} on type '${this.name()}'` +
+        `Cannot delete '${name}' in ${prop} on type '${this.name()}' ` +
           `'${this.kind()}' type has no ${prop}.`
       )
     }
@@ -169,15 +168,15 @@ export class GraphqlTypeEditor<
   public removeInProp: DeleteInType<T> = prop => name => {
     if (!this.hasProp(prop)) {
       throw new Error(
-        `Cannot remove '${name}' in ${prop} on type '${this.name()}'` +
+        `Cannot remove '${name}' in ${prop} on type '${this.name()}' ` +
           `'${this.kind()}' type has no ${prop}.`
       )
     }
 
     if (!this.hasInProp(prop)(name)) {
       throw new Error(
-        `Cannot remove '${name}' in ${prop} on type '${this.name()}'` +
-          `Value does not exist.`
+        `Cannot remove '${name}' in ${prop} on type '${this.name()}' ` +
+          `Field/value does not exist.`
       )
     }
 

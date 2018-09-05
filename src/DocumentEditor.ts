@@ -45,6 +45,10 @@ interface ActionInType {
 type DeleteInType = (type: TypeDefsVariants) => (name: string) => GraphqlDocumentEditor
 type RemoveInType = DeleteInType
 
+export interface GraphqlDocumentEditorOptions {
+  useImport?: boolean
+}
+
 export class GraphqlDocumentEditor {
   private directives: Hash<TypeEditorDirective> = {}
   private definitions: Hash<TypeEditorDefinition> = {}
@@ -52,8 +56,8 @@ export class GraphqlDocumentEditor {
 
   private schema: DocumentNode
 
-  constructor(schema: string | DocumentNode) {
-    this.schema = validateSchemaInput(schema)
+  constructor(schema: string | DocumentNode, options?: GraphqlDocumentEditorOptions) {
+    this.schema = validateSchemaInput(schema, options)
 
     this.schema.definitions.forEach(node => {
       if (!isSupported(node)) {
@@ -78,12 +82,17 @@ export class GraphqlDocumentEditor {
   public hasInType: HasInType = (type: TypeDefsVariants) => name =>
     R.has(name, this[type])
 
-  public getInType: GetInType = type => name => this[type][name]
+  public getInType: GetInType = type => name => {
+    if (!this.hasInType(type)(name)) {
+      throw new Error(`Cannot get type '${name}' - it does not exist.`)
+    }
+    return this[type][name]
+  }
 
   public createInType: ActionInType = type => node => {
     if (this.hasInType(type)(node.name.value)) {
       throw new Error(
-        `Cannot create type '${node.name.value}' in ${type}` +
+        `Cannot create type '${node.name.value}' in ${type} ` +
           `Definition with the same name already exists.`
       )
     }
@@ -96,7 +105,7 @@ export class GraphqlDocumentEditor {
   public replaceInType: ActionInType = type => node => {
     if (!this.hasInType(type)(node.name.value)) {
       throw new Error(
-        `Cannot replace type '${node.name.value}' in ${type}` +
+        `Cannot replace type '${node.name.value}' in ${type} ` +
           `Definition with this name does not exist.`
       )
     }
@@ -127,6 +136,52 @@ export class GraphqlDocumentEditor {
     }
 
     this.deleteInType(type)(name)
+
+    return this
+  }
+
+  public extendInType: ActionInType = type => node => {
+    if (!this.hasInType(type)(node.name.value)) {
+      throw new Error(
+        `Cannot extend type '${node.name.value}' in ${type}` +
+          `Definition with this name does not exist.`
+      )
+    }
+
+    const props = R.keys(R.pickBy(R.equals(true), typeSystemHashMap[node.kind]))
+
+    const next = new GraphqlTypeEditor(node)
+
+    // merge each hashable prop
+    props.forEach(prop => {
+      this[type][node.name.value].hashedNode[prop] = R.merge(
+        this[type][node.name.value].hashedNode[prop],
+        next.hashedNode[prop]
+      )
+    })
+
+    return this
+  }
+
+  public excludeInType: ActionInType = type => node => {
+    if (!this.hasInType(type)(node.name.value)) {
+      throw new Error(
+        `Cannot exclude type '${node.name.value}' in ${type}` +
+          `Definition with this name does not exist.`
+      )
+    }
+
+    const props = R.keys(R.pickBy(R.equals(true), typeSystemHashMap[node.kind]))
+
+    const diff = new GraphqlTypeEditor(node)
+
+    // omit all keys found in diff on each prop
+    props.forEach(prop => {
+      this[type][node.name.value].hashedNode[prop] = R.omit(
+        R.keys(diff.hashedNode[prop]),
+        this[type][node.name.value].hashedNode[prop]
+      )
+    })
 
     return this
   }

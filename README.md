@@ -1,15 +1,15 @@
-# Graphql-override
+# graphql-override
 
-> `graphql-override` – Utility tool for convinient modification of GraphQL Type Definitions. ✂️
+> `graphql-override` – Utility tool for handy modification of GraphQL SDL Type Definitions. ✂️
 
 ## Overview
 
-- Easily modify Type Definitions in GraphQL SDL or AST (not executable schema!)
+- Handy modification of Type Definitions in GraphQL SDL or AST (not executable schema nor executable definitions!)
 - Allows to reuse generated schema definitions to forward resolvers and share SDL code between database and server API
-- CLI & nice integration with `graphql-config`, `prisma` & `graphql-import`
+- CLI & integration with `graphql-config`, `prisma` & `graphql-import`
 - Transparent error reporting on unauthorized actions
 - (Somehow limited, but still) GraphQL AST Editor for document & type nodes
-- **very alpha** (just exploring the idea) - **no guarantees** (but it would probably take just few hours to rewrite it, so...)
+- **very alpha** (it's just a small experiment - but frankly it would probably take just few hours to rewrite it yourself, so...)
 
 ## Override tool
 
@@ -22,10 +22,13 @@ or
 
 $ npm install -D graphql-override
 ```
+*(`graphql` is a peer dependency!)*
 
 ### Idea
 
-So, the main idea is to use separate `overrides.graphql` file to modify Type Definitions and generate result file. Thanks to this - I can modify & reuse most of prisma-generated SDL without copying thousands of GraphQL SDL lines and struggling to keep all minor changes in sync. I think, that sometimes it's easier to write diff (also leveraging proper error reporting) than having to re-declare most types in their entirety.
+So, the main idea is to use separate `overrides.graphql` file to modify Type Definitions and generate result file. Thanks to this - I can modify & reuse most of prisma-generated SDL without copying thousands of GraphQL SDL lines and struggling to keep all minor changes in sync.
+
+I think, that sometimes it's easier to write diff (also leveraging proper error reporting) than having to re-declare most types in their entirety.
 
 **([Full example](link))**
 
@@ -75,7 +78,7 @@ graphql-override: new schema saved to: src/generated/app.graphql
 
 Directives can be apply to type or field definitions in overrides file. They perform specified action on schema and are removed from output.
 
-> Currently, it's not allowed to mix type & field directives - override directive cannot be simuntaneusly applied to type definition and it's field definition - only because all the combinatorics of outcome would be hard to reason about (but it's possible to specify as many consecutive override tasks as you like in .graphqlconfig )
+> Currently, it's not allowed to mix type & field directives - override directive cannot be simuntaneusly applied to type definition and its field definition - only because all the combinatorics of the outcome would be hard to reason about (but it's possible to specify as many consecutive override tasks as you like in .graphqlconfig )
 
 #### Directives for TYPE_DEFINITION OR FIELD DEFINITION
 
@@ -144,6 +147,7 @@ type SupportedDefinitionNode =
   | TypeExtensionNode
   | DirectiveDefinitionNode
 
+// where
 type TypeDefinitionNode =
   | ScalarTypeDefinitionNode
   | ObjectTypeDefinitionNode
@@ -221,16 +225,17 @@ All directives are executed by some an util called `DocumentEditor` (and subsequ
 
 - [ ] Add more tests
 - [ ] Support `SchemaDefinitionNode`
+- [ ] Opt-out from `graphql-import`
+- [ ] @rename directive (?)
 - [ ] Improve error reporting
-- [ ] Polish API
-- [ ] Finish README & example
+- [ ] Finish docs & example
 - [ ] **Evaluate if this tool makes any sense**
-- [ ] Think what to do next?
+- [ ] Next project :)
 
 ## See also
 
 - prisma
-- graphql-import
 - graphql-tools
 - graphql-compose
+- graphql-import
 - merge-graphql-schemas

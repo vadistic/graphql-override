@@ -107,9 +107,8 @@ export const directiveDefinitionHashMap = {
   },
 }
 
-export const typeSystemHashMap = Object.assign(
-  {},
-  typeDefinitionHashMap,
-  typeExtensionHashMap,
-  directiveDefinitionHashMap
-)
+export const typeSystemHashMap = {
+  ...typeDefinitionHashMap,
+  ...typeExtensionHashMap,
+  ...directiveDefinitionHashMap,
+}

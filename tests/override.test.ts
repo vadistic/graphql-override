@@ -1,5 +1,4 @@
 import { GraphqlDocumentEditor } from '../src'
-import { typeSystemHashMap } from '../src/hashmap'
 import { graphQLOverride } from '../src/override'
 import { overrides, schema } from './fixtures'
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
+exports[`DocumentEditor (Basics) .node() matches snapschot 1`] = `
 "{
   \\"kind\\": \\"Document\\",
   \\"definitions\\": [
@@ -1642,7 +1642,7 @@ exports[`TypeDefsEditor (Basics) .node() matches snapschot 1`] = `
 }"
 `;
 
-exports[`TypeDefsEditor (Basics) .print() matches snapshot 1`] = `
+exports[`DocumentEditor (Basics) .print() matches snapshot 1`] = `
 "type Query {
   Tweet(id: ID!): Tweet
   Tweets(limit: Int, skip: Int, sort_field: String, sort_order: String): [Tweet]

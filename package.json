@@ -2,16 +2,20 @@
   "name": "graphql-override",
   "version": "0.1.0",
   "author": "Jakub Wadas <vadistic@gmail.com>",
-  "description": "Utility tool for convinient modification of GraphQL Type Definitions. ✂️",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "description": "Utility tool for handy modification of GraphQL SDL Type Definitions. ✂️",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vadistic/graphql-override.git"
+  },
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "bin": {
     "graphql-override": "./dist/cli/index.js"
   },
   "scripts": {
-    "mock": "ts-node test/mock",
     "watch": "tsc -w",
     "clear": "rimraf dist",
     "copy:graphql": "cpx ./src/directives.graphql ./dist/",
@@ -20,18 +24,18 @@
     "test:watch": "yarn test -- --watchAll"
   },
   "dependencies": {
-    "graphql-config": ">2.0.0",
-    "graphql-import": ">0.5.0",
+    "graphql-config": "^2.1.0",
+    "graphql-import": "^0.6.0",
     "meow": "^5.0.0",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
-    "@types/graphql": "^0.13.4",
+    "@types/graphql": "^14.0.0",
     "@types/jest": "^23.3.1",
     "@types/meow": "^4.0.1",
-    "@types/node": "^10.9.3",
+    "@types/node": "^10.9.4",
     "@types/prettier": "^1.13.2",
-    "@types/ramda": "^0.25.36",
+    "@types/ramda": "^0.25.37",
     "cpx": "^1.5.0",
     "jest": "^23.5.0",
     "prettier": "^1.14.2",

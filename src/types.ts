@@ -11,7 +11,6 @@ import {
   StringValueNode,
   TypeDefinitionNode,
   TypeExtensionNode,
-  VisitorKeyMap,
 } from 'graphql'
 import * as R from 'ramda'
 
@@ -19,7 +18,6 @@ import { typeSystemHashMap } from './hashmap'
 
 export type Literal = string | number | boolean | undefined | null | void | {}
 export const tuple = <T extends Literal[]>(...args: T) => args
-
 
 export const actionTypes = tuple(
   'create',

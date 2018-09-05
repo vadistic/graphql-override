@@ -10,7 +10,7 @@
 # otherwise some types would be optimised as not necessary and not end up imported
 # import * from "schema.graphql"
 
-# import some overrides form other files
+# import some more overrides form other files
 # import * from "postOverrides.graphql"
 
 type User {

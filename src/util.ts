@@ -42,10 +42,7 @@ export type getSchemaInput = (
   options?: GetSchemaInputOptions
 ) => DocumentNode
 
-export const getSchemaInput: getSchemaInput = (
-  input,
-  { inputName, useImport } = {}
-) => {
+export const getSchemaInput: getSchemaInput = (input, { inputName, useImport } = {}) => {
   if (typeof input === 'object' && input.kind === 'Document') {
     return input
   } else if (typeof input === 'string') {

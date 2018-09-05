@@ -1,11 +1,11 @@
-import { GraphqlDocumentEditor } from '../src'
-
 import { parse, print } from 'graphql'
+import * as R from 'ramda'
 
+import { GraphqlDocumentEditor } from '../src'
 import { schema } from './fixtures'
 import { serialize } from './util'
 
-describe('TypeDefsEditor (Basics)', () => {
+describe('DocumentEditor (Basics)', () => {
   const editor = new GraphqlDocumentEditor(schema)
 
   it('instantiate', () => {
@@ -29,7 +29,7 @@ describe('TypeDefsEditor (Basics)', () => {
   })
 })
 
-describe('TypeDefsEditor (CRUD)', () => {
+describe('DocumentEditor (CRUD)', () => {
   const editor = new GraphqlDocumentEditor(schema)
 
   it('.hasDefinition() succeed', () => {
@@ -53,8 +53,9 @@ describe('TypeDefsEditor (CRUD)', () => {
 `)
   })
 
-  it('.getDefinition() fails', () => {
-    const definition = editor.getDefinition('Something')
-    expect(definition).toBeFalsy()
+  it('.getDefinition() throws', () => {
+    expect(() => {
+      const definition = editor.getDefinition('Something')
+    }).toThrowError('does not exist')
   })
 })

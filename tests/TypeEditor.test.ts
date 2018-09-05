@@ -1,20 +1,10 @@
-import {
-  astFromValue,
-  EnumTypeDefinitionNode,
-  FieldDefinitionNode,
-  Kind,
-  ObjectTypeDefinitionNode,
-  parseValue,
-  typeFromAST,
-} from 'graphql'
+import { ObjectTypeDefinitionNode } from 'graphql'
 import * as R from 'ramda'
 
 import { GraphqlTypeEditor } from '../src'
-import { SupportedDefinitionNode } from '../src/types'
-import { schema as fullSchema } from './fixtures'
 import { getDef, pretty, serialize } from './util'
 
-describe('DefinitionEditor (Basics)', () => {
+describe('TypeEditor (Basics)', () => {
   const schema = `
   interface BasicNode {
     id: ID!
@@ -42,7 +32,7 @@ describe('DefinitionEditor (Basics)', () => {
   })
 })
 
-describe('DefinitionEditor (SupportedDefinitionNode)', () => {
+describe('TypeEditor (SupportedDefinitionNode)', () => {
   // Types
   it('parse, print & returns node snapshot of ScalarTypeDefinition', () => {
     const source = pretty(`
@@ -246,12 +236,12 @@ describe('DefinitionEditor (SupportedDefinitionNode)', () => {
 
     expect(def.kind).toMatch('OperationDefinition')
     expect(() => {
-      const editor = new GraphqlTypeEditor(def)
+      const editor = new GraphqlTypeEditor(getDef(source))
     }).toThrowError('not supported')
   })
 })
 
-describe('DefinitionEditor (CRUD)', () => {
+describe('TypeEditor (CRUD)', () => {
   it('.hasProp() succeeds & fails', () => {
     const source = pretty(`
     input CreatePostInput {
@@ -295,8 +285,6 @@ describe('DefinitionEditor (CRUD)', () => {
     `)
 
     const editor = new GraphqlTypeEditor(getDef(source))
-
-    const field = (getDef(source) as ObjectTypeDefinitionNode).fields[0]
 
     expect(editor.getInProp('fields')('id').name.value).toMatch('id')
     expect(editor.getInProp('fields')('deletedat')).toBeFalsy()

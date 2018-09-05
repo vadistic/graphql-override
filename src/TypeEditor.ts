@@ -13,7 +13,6 @@ import {
   AllDefinitionNodeKeys,
   HashDefinitionNodeKeys,
   HashedDefinitionNode,
-  PropDefNode,
   PropNode,
   SupportedDefinitionNode,
 } from './types'

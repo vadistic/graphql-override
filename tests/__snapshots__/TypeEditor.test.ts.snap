@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DefinitionEditor (Basics) .node() matches snapschot 1`] = `
+exports[`TypeEditor (Basics) .node() matches snapschot 1`] = `
 "{
   \\"kind\\": \\"InterfaceTypeDefinition\\",
   \\"name\\": {
@@ -131,7 +131,7 @@ exports[`DefinitionEditor (Basics) .node() matches snapschot 1`] = `
 }"
 `;
 
-exports[`DefinitionEditor (Basics) .print() matches snapshot 1`] = `
+exports[`TypeEditor (Basics) .print() matches snapshot 1`] = `
 "interface BasicNode {
   id: ID!
   createdAt: DateTime!
@@ -139,7 +139,7 @@ exports[`DefinitionEditor (Basics) .print() matches snapshot 1`] = `
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node snapshot of EnumTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse & print & returns node snapshot of EnumTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"EnumTypeDefinition\\",
   \\"name\\": {
@@ -208,7 +208,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node snapshot of EnumTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse & print & returns node snapshot of EnumTypeExtension 1`] = `
 "{
   \\"kind\\": \\"EnumTypeExtension\\",
   \\"name\\": {
@@ -277,7 +277,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse & print & returns node
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of DirectiveDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of DirectiveDefinition 1`] = `
 "{
   \\"kind\\": \\"DirectiveDefinition\\",
   \\"name\\": {
@@ -355,7 +355,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InputObjectTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InputObjectTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"InputObjectTypeDefinition\\",
   \\"name\\": {
@@ -452,7 +452,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InputObjectTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InputObjectTypeExtension 1`] = `
 "{
   \\"kind\\": \\"InputObjectTypeExtension\\",
   \\"name\\": {
@@ -549,7 +549,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InterfaceTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InterfaceTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"InterfaceTypeDefinition\\",
   \\"name\\": {
@@ -680,7 +680,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InterfaceTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of InterfaceTypeExtension 1`] = `
 "{
   \\"kind\\": \\"InterfaceTypeExtension\\",
   \\"name\\": {
@@ -811,7 +811,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ObjectTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ObjectTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"ObjectTypeDefinition\\",
   \\"name\\": {
@@ -1068,7 +1068,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ObjectTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ObjectTypeExtension 1`] = `
 "{
   \\"kind\\": \\"ObjectTypeExtension\\",
   \\"name\\": {
@@ -1325,7 +1325,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"ScalarTypeDefinition\\",
   \\"name\\": {
@@ -1344,7 +1344,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of ScalarTypeExtension 1`] = `
 "{
   \\"kind\\": \\"ScalarTypeExtension\\",
   \\"name\\": {
@@ -1380,7 +1380,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of UnionTypeDefinition 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of UnionTypeDefinition 1`] = `
 "{
   \\"kind\\": \\"UnionTypeDefinition\\",
   \\"name\\": {
@@ -1431,7 +1431,7 @@ exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node 
 }"
 `;
 
-exports[`DefinitionEditor (SupportedDefinitionNode) parse, print & returns node snapshot of UnionTypeExtension 1`] = `
+exports[`TypeEditor (SupportedDefinitionNode) parse, print & returns node snapshot of UnionTypeExtension 1`] = `
 "{
   \\"kind\\": \\"UnionTypeExtension\\",
   \\"name\\": {

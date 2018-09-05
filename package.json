@@ -1,8 +1,8 @@
 {
-  "name": "graphql-ast-editor",
+  "name": "graphql-override",
   "version": "0.1.0",
   "author": "Jakub Wadas <vadistic@gmail.com>",
-  "description": "TODO",
+  "description": "Edit & override type definitions in GraphQL SDL",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",

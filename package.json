@@ -1,27 +1,38 @@
 {
   "name": "graphql-ast-editor",
   "version": "0.1.0",
-  "main": "index.js",
   "author": "Jakub Wadas <vadistic@gmail.com>",
+  "description": "TODO",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
   "private": false,
+  "bin": {
+    "graphql-override": "./dist/cli/index.js"
+  },
   "scripts": {
     "mock": "ts-node test/mock",
-    "build": "tsc",
+    "watch": "tsc -w",
+    "clear": "rimraf dist",
+    "copy:graphql": "cpx ./src/directives.graphql ./dist/",
+    "build": "yarn clear && tsc && yarn copy:graphql",
     "test": "jest --config ./jest.config.json",
     "test:watch": "yarn test -- --watchAll"
   },
   "dependencies": {
+    "graphql-config": "^2.1.0",
+    "meow": "^5.0.0",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
     "@types/graphql": "^0.13.4",
     "@types/jest": "^23.3.1",
+    "@types/meow": "^4.0.1",
     "@types/node": "^10.9.3",
     "@types/prettier": "^1.13.2",
     "@types/ramda": "^0.25.36",
+    "cpx": "^1.5.0",
     "graphql": "^0.13.2",
-    "graphql-import": "^0.6.0",
     "jest": "^23.5.0",
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
@@ -30,5 +41,8 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.3"
+  },
+  "peerDependencies": {
+    "graphql-import": "^0.6.0"
   }
 }

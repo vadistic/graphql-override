@@ -1,0 +1,39 @@
+# import Query.*, Mutation.*, * from "custom.graphql"
+
+type Query {
+  posts(
+    where: PostWhereInput
+    orderBy: PostOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Post]!
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [User]!
+  post(where: PostWhereUniqueInput!): Post
+  user(where: UserWhereUniqueInput!): User
+}
+
+type Mutation {
+  createPost(data: PostCreateInput!): Post!
+  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deletePost(where: PostWhereUniqueInput!): Post
+  deleteUser(where: UserWhereUniqueInput!): User
+  updateManyPosts(data: PostUpdateInput!, where: PostWhereInput): BatchPayload!
+  deleteManyPosts(where: PostWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+type Subscription {
+  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+}

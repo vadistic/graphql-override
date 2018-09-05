@@ -1,0 +1,26 @@
+input PostCreateInput {
+  isPublished: Boolean
+  title: String!
+  text: String!
+  # @remove throws erorr when the field did not exist on schema (@delete allows that)
+  author: UserCreateOneWithoutPostsInput! @remove
+}
+
+input PostUpdateInput @exclude {
+  # For @remove, @delete & @exclude directives
+  # fields are identified by name and can have any (valid) type
+  author: Int
+}
+
+input PostWhereInput @replace {
+  AND: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  NOT: [PostWhereInput!]
+  id: ID
+  id_in: [ID!]
+  updatedAt_gte: DateTime
+  isPublished: Boolean
+  title_contains: String
+  text_contains: String
+  author: UserWhereInput
+}

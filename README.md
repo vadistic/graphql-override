@@ -22,7 +22,8 @@ or
 
 $ npm install -D graphql-override
 ```
-*(`graphql` is a peer dependency!)*
+
+_(`graphql` is a peer dependency!)_
 
 ### Idea
 
@@ -80,11 +81,11 @@ Directives can be apply to type or field definitions in overrides file. They per
 
 > Currently, it's not allowed to mix type & field directives - override directive cannot be simuntaneusly applied to type definition and its field definition - only because all the combinatorics of the outcome would be hard to reason about (but it's possible to specify as many consecutive override tasks as you like in .graphqlconfig )
 
-#### Directives for TYPE_DEFINITION OR FIELD DEFINITION
+#### Directives for Type Definition or Field Definition
 
 ```gql
 # Create Type|Field in schema (Error if node already exists)
-directive @create
+directive @create on FIELD_DEFINITION
 
 # Replace Type|Field (Error if node does not exists)
 directive @replace on FIELD_DEFINITION
@@ -99,7 +100,7 @@ directive @remove on FIELD_DEFINITION
 directive @delete on FIELD_DEFINITION
 ```
 
-#### Directives ONLY for TYPE_DEFINITION
+#### Directives ONLY for Type Definition
 
 ```gql
 # Extend (merge) all fields, values, interfaces & directives  with type in schema

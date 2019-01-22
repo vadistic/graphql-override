@@ -4,12 +4,12 @@
 
 ## Overview
 
-- Handy modification of Type Definitions in GraphQL SDL or AST (not executable schema nor executable definitions!)
+- Handy modification of Type Definitions in GraphQL SDL or AST (but not executable schema nor executable definitions!)
 - Allows to reuse generated schema definitions to forward resolvers and share SDL code between database and server API
 - CLI & integration with `graphql-config`, `prisma` & `graphql-import`
 - Transparent error reporting on unauthorized actions
 - (Somehow limited, but still) GraphQL AST Editor for document & type nodes
-- **very alpha** (it's just a small experiment - but frankly it would probably take just few hours to rewrite it yourself, so...)
+- **very alpha** (it's just a small experiment)
 
 ## Override tool
 
@@ -27,9 +27,11 @@ _(`graphql` is a peer dependency!)_
 
 ### Idea
 
-So, the main idea is to use separate `overrides.graphql` file to modify Type Definitions and generate result file. Thanks to this - I can modify & reuse most of prisma-generated SDL without copying thousands of GraphQL SDL lines and struggling to keep all minor changes in sync.
+So, the main idea is to use separate `overrides.graphql` file to modify imported Type Definitions and generate graphql file. It allows modification & reuse of most of prisma-generated SDL without copying thousands of GraphQL SDL lines.
 
 I think, that sometimes it's easier to write diff (also leveraging proper error reporting) than having to re-declare most types in their entirety.
+
+The project consist of override tool (CLI + API) and simple GraphQL AST editor (`DocumentEditor`) on which it was build.
 
 **([Full example](link))**
 
@@ -79,7 +81,7 @@ graphql-override: new schema saved to: src/generated/app.graphql
 
 Directives can be apply to type or field definitions in overrides file. They perform specified action on schema and are removed from output.
 
-> Currently, it's not allowed to mix type & field directives - override directive cannot be simuntaneusly applied to type definition and its field definition - only because all the combinatorics of the outcome would be hard to reason about (but it's possible to specify as many consecutive override tasks as you like in .graphqlconfig )
+> Currently, it's not allowed to mix type & field directives (override directives cannot be simuntaneusly applied to one type definition and its fields - only because all the combinatorics of the outcome would be hard to reason about (but it's possible to specify as many consecutive override tasks as you like in .graphqlconfig )
 
 #### Directives for Type Definition or Field Definition
 
@@ -122,7 +124,7 @@ graphQLOverride = (
 
 ### CLI tool
 
-```
+```sh
   $ graphql-override <flags>
 
   Options
@@ -220,23 +222,19 @@ server.start(() => console.log('Server is running on localhost:4000'))
 
 ## TypeEditor
 
-All directives are executed by some an util called `DocumentEditor` (and subsequent `TypeEditor` for editing definition nodes). It's possible to use it to conviniently and edit schema without the whole **override stuff**. Typescript interfaces shows usage.
+All directives are executed by some an util called `DocumentEditor` (and subsequent `TypeEditor` for editing definition nodes). It's possible to use it to conviniently and edit schema without the whole **override idea**. Typescript interfaces shows usage.
 
 ## TODO
 
-- [ ] Add more tests
 - [ ] Support `SchemaDefinitionNode`
 - [ ] Opt-out from `graphql-import`
-- [ ] @rename directive (?)
-- [ ] Improve error reporting
-- [ ] Finish docs & example
-- [ ] **Evaluate if this tool makes any sense**
-- [ ] Next project :)
+- [ ] Improve API
 
 ## See also
 
-- prisma
-- graphql-tools
-- graphql-compose
-- graphql-import
-- merge-graphql-schemas
+- [prisma](https://github.com/prisma/prisma)
+- [graphql-s2s](https://github.com/nicolasdao/graphql-s2s)
+- [graphql-tools](https://github.com/apollographql/graphql-tools)
+- [graphql-compose](https://github.com/graphql-compose/graphql-compose)
+- [graphql-import](https://github.com/prisma/graphql-import)
+- [merge-graphql-schemas](https://github.com/okgrow/merge-graphql-schemas)

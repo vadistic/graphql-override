@@ -63,13 +63,19 @@ export type PropNode = PropDefNode | DirectiveNode | NamedTypeNode
 
 export type DirectiveDefinitionNode = ASTKindToNode[typeof directiveDefNodes[number]]
 
+export type HasKind<T> = T & {
+  kind: string
+}
+
+export const hasKindProp = <T extends object>(obj: T): obj is HasKind<T> =>
+  Object.prototype.hasOwnProperty.call(obj, 'kind')
+
 export const isFieldDefNode = (node: object): node is PropDefNode =>
-  R.contains(R.propOr('', 'kind', node), propDefNodes)
+  hasKindProp(node) && (propDefNodes as string[]).includes(node.kind)
 
 export const isTypeDefNode = (node: object): node is TypeDefNode =>
-  R.contains(R.propOr('', 'kind', node), typeDefNodes)
+  hasKindProp(node) && (typeDefNodes as string[]).includes(node.kind)
 
-// Old types
 export type SupportedDefinitionNode =
   | TypeDefinitionNode
   | TypeExtensionNode

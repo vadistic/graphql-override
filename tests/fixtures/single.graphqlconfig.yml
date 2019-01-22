@@ -2,7 +2,7 @@ schemaPath: src/schema.graphql
 extensions:
   endpoints:
     default: http://localhost:4000
-  gql-override:
+  override:
     - schema: tests/fixtures/schema.graphql
       overrides: tests/fixtures/overrides.graphql
       output: tests/temp/single-schema.generated.graphql

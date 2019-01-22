@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
-import { getGraphQLConfig, GraphQLResolvedConfigData } from 'graphql-config'
+import { getGraphQLConfig } from 'graphql-config'
 import * as meow from 'meow'
 import * as path from 'path'
 import * as R from 'ramda'

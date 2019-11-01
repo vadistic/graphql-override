@@ -2,6 +2,10 @@
 
 > `graphql-override` – Utility tool for handy modification of GraphQL SDL Type Definitions. ✂️
 
+## Archived
+
+I wrote better thingy: https://github.com/vadistic/graphql-extra
+
 ## Overview
 
 - Handy modification of Type Definitions in GraphQL SDL or AST (but not executable schema nor executable definitions!)
